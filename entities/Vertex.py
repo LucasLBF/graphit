@@ -7,4 +7,7 @@ class Vertex():
 
     def __gt__(self, other: object) -> bool:
         return self.id > other.id
+    
+    def __repr__(self) -> str:
+        return f"(Vertice {self.id})"
         

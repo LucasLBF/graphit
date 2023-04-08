@@ -1,4 +1,4 @@
-from Graph import Graph
+from entities.Graph import Graph
 
 def read_from_terminal():
     is_directed_input = input("Grafo direcionado? (y/n): ")
@@ -22,7 +22,7 @@ def read_from_terminal():
     print(graph)
 
 def read_from_file():
-    '''Arquivo deve ter o formato igual ao do test.txt.
+    '''Arquivo deve ter o formato igual aos do diretorio test_files.
     Primeira linha: numero de vertices numero de arestas
     Segunda linha em diante sao as arestas no formato:
     vertice1 vertice2.'''
@@ -35,7 +35,7 @@ def read_from_file():
     graph = Graph(is_directed)
 
     # with open(file_name, 'r') as f:
-    with open('test.txt', 'r') as f:
+    with open('./test_files/test_1.txt', 'r') as f:
         num_vertices, num_edges = map(int, f.readline().split())
 
         for i in range(num_vertices):
