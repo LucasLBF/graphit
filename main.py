@@ -28,10 +28,10 @@ def read_from_file():
     vertice1 vertice2.'''
     # file_name = input("Nome do arquivo de input: ")
 
-    is_directed_input = input("Grafo direcionado? (y/n): ")
+    #is_directed_input = input("Grafo direcionado? (y/n): ")
+    #is_directed = True if is_directed_input == 'y' else False
+    is_directed = False
 
-    is_directed = True if is_directed_input == 'y' else False
-    
     graph = Graph(is_directed)
 
     # with open(file_name, 'r') as f:
@@ -45,7 +45,12 @@ def read_from_file():
             u, v = map(int, f.readline().split())
             graph.add_edge(u, v)
 
-    print(graph)
+    #print(graph)
+    neighbors = graph.get_neighbors(graph.check_if_vertex_exists(4))
+    for k in neighbors.items():
+        n_list = k[1]
+    for c in range(0, len(n_list)):
+        print(n_list[c], graph.get_neighbors_undirected(n_list[c]))
 
 # read_from_terminal()
 read_from_file()
