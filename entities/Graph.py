@@ -8,6 +8,9 @@ class Graph():
         self.is_directed = is_directed
         self.vertices = []
         self.edges = []
+
+    def get_edges(self) -> List[Type[Edge]]:
+        return self.edges
     
     def get_order(self) -> int:
         '''Informa a ordem do grafo'''

@@ -52,5 +52,9 @@ def read_from_file():
     for c in range(0, len(n_list)):
         print(n_list[c], graph.get_neighbors_undirected(n_list[c]))
 
+    edges = graph.get_edges()
+    print(len(edges))
+    print(edges[0].get_vertex())
+
 # read_from_terminal()
 read_from_file()
