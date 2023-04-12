@@ -10,7 +10,14 @@ class Graph():
         self.edges = []
 
     def get_edges(self) -> List[Type[Edge]]:
+        '''Informa todas as arestas do grafo'''
+
         return self.edges
+    
+    def get_vertices(self) -> List[Type[Vertex]]:
+        '''Informa todos os vertices do grafo'''
+
+        return self.vertices
     
     def get_order(self) -> int:
         '''Informa a ordem do grafo'''
@@ -34,7 +41,7 @@ class Graph():
         for vertex in self.vertices:
             if vertex.id == vertex_id:
                 return vertex
-    
+
 
     def add_edge(self,
                 vertex_1: int,
@@ -103,6 +110,13 @@ class Graph():
         for edge in self.edges:
             if edge.check_if_vertex_exists(vertex):
                 neighbors.append(edge.get_neighbor_vertex(vertex))
+        return neighbors
+    
+    def get_neighbors_edges(self, vertex: Type) -> List[Type[Edge]]:
+        neighbors = []
+        for edge in self.edges:
+            if edge.check_if_vertex_exists(vertex):
+                neighbors.append(edge)
         return neighbors
 
     def __repr__(self) -> str:

@@ -16,9 +16,12 @@ class Edge():
         self.weight = weight
     
     def get_weight(self) -> int:
+        '''Retorna o peso da aresta'''
+       
         return self.weight
     
     def get_vertex(self) -> List[Type[Vertex]]:
+        '''Retorna a lista dos dois vertices da aresta'''
         return [self.first_vertex, self.second_vertex]
 
     def check_if_vertex_exists(self, vertex: Type[Vertex]) -> bool:
