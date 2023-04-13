@@ -1,5 +1,9 @@
 from entities.Graph import Graph
-from typing import Type
+from entities.Node import Node
+from entities.Edge import Edge
+from entities.Vertex import Vertex
+from typing import Type, List, Union
+
 
 def read_from_terminal():
     is_directed_input = input("Grafo direcionado? (y/n): ")
@@ -45,71 +49,59 @@ def read_from_file():
         for i in range(num_edges):
             u, v = map(int, f.readline().split())
             graph.add_edge(u, v)
-    '''
-    #print(graph)
-    neighbors = graph.get_neighbors(graph.check_if_vertex_exists(4))
-    for k in neighbors.items():
-        n_list = k[1]
-    for c in range(0, len(n_list)):
-        print(n_list[c], graph.get_neighbors_undirected(n_list[c]))
-
-    edges = graph.get_edges()
-    print(len(edges), end='\n\n')
-
-    for c in range(0, len(edges)):
-        print(edges[c].get_vertex(), end=' ')
-        print("Weight: " + str(edges[c].get_weight()))'''
     
     '''Algoritimo fake'''
-    indSrc = -1
-    v = graph.get_vertices()
-    e = graph.get_edges()
+    ordem_vertices = []
+    node_src = Node(graph.check_if_vertex_exists(3), 999, None, False)
+    ordem_vertices.append(node_src)
 
-    for c in range(0, len(v)):
-        if 3 == v[c].getID():
-            indSrc = c
+    #Inicia o vertice original
+    node_src.set_cost(0)
+    node_src.set_vertex_a(node_src.get_vertex())
+    
+    for c in range(num_vertices):
+        node_src = ordem_vertices[c]
+        edge_adj = graph.get_neighbors_edges(node_src.get_vertex())
+
+        for i in range(len(edge_adj)):
+            node_sec = Type[Node]
+            vertex_s = edge_adj[i].get_neighbor_vertex(node_src.get_vertex())
+            aux = node_in(ordem_vertices, vertex_s)
+            
+            if aux[0] == True and aux[1].get_is_closed() == True: 
+                continue
+            elif aux[0] == True:
+                node_sec = aux[1]
+            else: 
+                node_sec = Node(vertex_s, 999, node_src.get_vertex(), False)
+                ordem_vertices.append(node_sec)
+
+            soma = node_src.get_cost() + edge_adj[i].get_weight()
+            if (soma < node_sec.get_cost()):
+                node_sec.set_cost(soma)
+                node_sec.set_vertex_a(node_src.get_vertex())
+
+        node_src.set_closed_status(True)
+
+        for node in ordem_vertices:
+            print(node.get_vertex(), end=' ')
+            print(node.get_cost(), end=' ')
+            print(node.get_vertex_ant(), end=' ')
+            print(node.get_is_closed(), end=' ')
+            print()
+        print()
+            
+                
+            
+def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
+    end = [False, None]
+    for node in lista:
+        if node.get_vertex() == vertex:
+            end = [True, node]
             break
-
-    # Cria a tabela dos vertices
-    vFechado = [False] * graph.get_order()
-    vCusto = [0] * graph.get_order()
-    vAnterior = ['null'] * graph.get_order()
-
-    #Passo 1
-    print(v[indSrc])
-    vCusto[indSrc] = 0
-    vAnterior[indSrc] = str(v[indSrc].getID())
-    eAdj = graph.get_neighbors_edges(v[indSrc]) 
-
-    print(graph.get_neighbors_undirected(v[indSrc]))
-    
-    print('P1')
-    print(vCusto)
-    print(vAnterior)
-    print(vFechado) 
-
-    #Passo 2 
-    # vAdj[0].get_neighbor_vertex(v[indSrc])
-    for c in range(0, len(eAdj)):
-        vSec = eAdj[c].get_neighbor_vertex(v[indSrc])
-
-        indSec = -1
-        for i in range(0, len(v)):
-            if vSec.getID() == v[i].getID():
-                indSec = i
-                break
-        
-        vCusto[indSec] = eAdj[c].get_weight() + vCusto[indSrc]
-        vAnterior[indSec] = str(v[indSrc].getID())
-    vFechado[indSrc] = True
-
-    print('\nP2')
-    print(vCusto)
-    print(vAnterior)
-    print(vFechado)
-    
-
+    return end
 
 
 # read_from_terminal()
 read_from_file()
+
