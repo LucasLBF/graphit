@@ -40,7 +40,7 @@ def read_from_file():
     graph = Graph(is_directed)
 
     # with open(file_name, 'r') as f:
-    with open('./test_files/test_4.txt', 'r') as f:
+    with open('./test_files/test_1.txt', 'r') as f:
         num_vertices, num_edges = map(int, f.readline().split())
 
         for i in range(num_vertices):
@@ -51,7 +51,8 @@ def read_from_file():
             graph.add_edge(u, v)
 
     # Teste lendo o test_4
-    dijkstra_undirected(graph, 1)
+    #dijkstra_undirected(graph, 1)
+    menor_caminho(3, 6, graph)
         
             
 def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
@@ -65,7 +66,7 @@ def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, T
     return end
 
 
-def dijkstra_undirected(graph: Type[Graph], vertex_src: int):
+def dijkstra_undirected(graph: Type[Graph], vertex_src: int, print: bool = True) -> List[Type[Node]]:
     '''Recebe o grafo e o vertice de origem, retorna o 
     menor caminho de cada vertice em relacao a origem'''
     num_vertices = graph.get_order()
@@ -73,7 +74,6 @@ def dijkstra_undirected(graph: Type[Graph], vertex_src: int):
     node_src = Node(graph.check_if_vertex_exists(vertex_src), 999, None, False)
     ordem_vertices.append(node_src)
 
-    #Inicia o vertice original
     node_src.set_cost(0)
     node_src.set_vertex_a(node_src.get_vertex())
     
@@ -101,13 +101,33 @@ def dijkstra_undirected(graph: Type[Graph], vertex_src: int):
 
         node_src.set_closed_status(True)
 
-        for node in ordem_vertices:
-            print(node.get_vertex(), end=' ')
-            print(node.get_cost(), end=' ')
-            print(node.get_vertex_ant(), end=' ')
-            print(node.get_is_closed(), end=' ')
+        if print == True:
+            for node in ordem_vertices:
+                print(node.get_vertex(), end=' ')
+                print(node.get_cost(), end=' ')
+                print(node.get_vertex_ant(), end=' ')
+                print(node.get_is_closed(), end=' ')
+                print()
             print()
-        print()
+    return ordem_vertices
+
+
+def menor_caminho(v1: int, v2: int, graph: Type[Graph]):
+    min_cost_nodes = dijkstra_undirected(graph, v1, False)
+    c = 0
+    vertex = graph.check_if_vertex_exists(v2)
+
+    while True:
+        for nodes in min_cost_nodes:
+            if nodes.get_vertex() == vertex:
+                print(f'{nodes.get_vertex()} | Cost {nodes.get_cost()}')
+                break
+
+        if vertex == graph.check_if_vertex_exists(v1):
+            break 
+        vertex = nodes.get_vertex_ant()
+
+
 
 # read_from_terminal()
 read_from_file()
