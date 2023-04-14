@@ -40,7 +40,7 @@ def read_from_file():
     graph = Graph(is_directed)
 
     # with open(file_name, 'r') as f:
-    with open('./test_files/test_1.txt', 'r') as f:
+    with open('./test_files/test_4.txt', 'r') as f:
         num_vertices, num_edges = map(int, f.readline().split())
 
         for i in range(num_vertices):
@@ -49,10 +49,28 @@ def read_from_file():
         for i in range(num_edges):
             u, v = map(int, f.readline().split())
             graph.add_edge(u, v)
-    
-    '''Algoritimo fake'''
+
+    # Teste lendo o test_4
+    dijkstra_undirected(graph, 1)
+        
+            
+def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
+    '''Recebe um node e um vertice, retorna se o veritce é 
+    do node recebido, se sim retorna True e o Node'''
+    end = [False, None]
+    for node in lista:
+        if node.get_vertex() == vertex:
+            end = [True, node]
+            break
+    return end
+
+
+def dijkstra_undirected(graph: Type[Graph], vertex_src: int):
+    '''Recebe o grafo e o vertice de origem, retorna o 
+    menor caminho de cada vertice em relacao a origem'''
+    num_vertices = graph.get_order()
     ordem_vertices = []
-    node_src = Node(graph.check_if_vertex_exists(3), 999, None, False)
+    node_src = Node(graph.check_if_vertex_exists(vertex_src), 999, None, False)
     ordem_vertices.append(node_src)
 
     #Inicia o vertice original
@@ -90,17 +108,6 @@ def read_from_file():
             print(node.get_is_closed(), end=' ')
             print()
         print()
-            
-                
-            
-def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
-    end = [False, None]
-    for node in lista:
-        if node.get_vertex() == vertex:
-            end = [True, node]
-            break
-    return end
-
 
 # read_from_terminal()
 read_from_file()
