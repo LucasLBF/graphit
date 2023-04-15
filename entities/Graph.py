@@ -18,7 +18,7 @@ class Graph():
         self.djkstra_strategy = djkstra
     
     def get_shortest_path(self, src_vertex: int, dest_vertex: int) -> Dict:
-        return self.strategy.execute(src_vertex, dest_vertex)
+        return self.djkstra_strategy.execute(src_vertex, dest_vertex)
 
     def get_edges(self) -> List[Type[Edge]]:
         '''Informa todas as arestas do grafo'''

@@ -40,6 +40,7 @@ def read_from_file():
     #graph.set_shortest_path_strategy(DjkstraStrategy(graph))
 
     graph.set_djkstra_strategy(DjkstraStrategy(graph))
+
     #print(graph)
     #x = graph.get_raio_diametro()
     #print(x)
