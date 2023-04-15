@@ -51,10 +51,10 @@ def read_from_file():
             graph.add_edge(u, v)
 
     # Teste lendo o test_4
-    #dijkstra_undirected(graph, 1)
+    dijkstra_undirected(graph, 1, True)
     # menor_caminho(3, 6, graph)
     # pyvis_visualization(graph)
-    pyvis_visualization_sssp(graph, 1, 6)
+    # pyvis_visualization_sssp(graph, 1, 6)
     # get_shortest_path(graph, 3, 6)
         
             
@@ -69,7 +69,7 @@ def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, T
     return end
 
 
-def dijkstra_undirected(graph: Type[Graph], vertex_src: int, print: bool = True) -> List[Type[Node]]:
+def dijkstra_undirected(graph: Type[Graph], vertex_src: int, print_output: bool = True) -> List[Type[Node]]:
     '''Recebe o grafo e o vertice de origem, retorna o 
     menor caminho de cada vertice em relacao a origem'''
     num_vertices = graph.get_order()
@@ -106,12 +106,12 @@ def dijkstra_undirected(graph: Type[Graph], vertex_src: int, print: bool = True)
 
         node_src.set_closed_status(True)
 
-        if print == True:
+        if print_output == True:
             for node in ordem_vertices:
                 print(node.get_vertex(), end=' ')
                 print(node.get_cost(), end=' ')
                 # print(node.get_vertex_ant(), end=' ')
-                # print(node.prev_node.get_vertex(), end=' ')
+                print(node.get_vertex() if not node.prev_node else node.prev_node.get_vertex(), end=' ')
                 print(node.get_is_closed(), end=' ')
                 print()
             print()
@@ -153,6 +153,7 @@ def get_shortest_path(graph: Type[Graph], src_id: int, dest_id: int) -> Dict:
     for node in nodes_with_cost:
         if node.vertex.id == dest_id:
             tmp = node
+            cost = node.get_cost()
             break
     
     while tmp.prev_node:
@@ -162,28 +163,27 @@ def get_shortest_path(graph: Type[Graph], src_id: int, dest_id: int) -> Dict:
         if not tmp.prev_node:
             vertices.insert(0, tmp.vertex)
 
-    result = {'edges': edges, 'vertices': vertices}
+    result = {'edges': edges, 'vertices': vertices, 'cost': cost}
     return result
 
 def pyvis_visualization_sssp(graph: Type[Graph], src_id: int, dest_id: int) -> None:
 
-    n = Network(height="100vh", width="100%", bgcolor="#222222", font_color="white", directed=graph.is_directed)
     shortest_path = get_shortest_path(graph, src_id, dest_id)
+    n = Network(height="100vh", width="100%", bgcolor="#222222", font_color="white", directed=graph.is_directed)
 
     for vertex in graph.get_vertices():
         is_highlighted = vertex in shortest_path['vertices']
-        n.add_node(vertex.id, label=str(vertex.id), color='red' if is_highlighted else '#97c2fc')
+        n.add_node(vertex.id, label=str(vertex.id), color='#dc2f02' if is_highlighted else '#97c2fc')
     
     for edge in graph.get_edges():
         is_highlighted = edge in shortest_path['edges']
         n.add_edge(edge.first_vertex.id,
                     edge.second_vertex.id,
                     label=str(edge.weight),
-                    color='red' if is_highlighted else '#97c2fc',
+                    color='#dc2f02' if is_highlighted else '#97c2fc',
                     width=5 if is_highlighted else 2)
     
     n.write_html("graph.html", open_browser=True)
-
 
 # read_from_terminal()
 read_from_file()
