@@ -3,7 +3,7 @@ from entities.Node import Node
 from entities.Edge import Edge
 from entities.Vertex import Vertex
 from typing import Type, List, Union, Dict
-from pyvis.network import Network
+#from pyvis.network import Network
 from util import archive
 
 def read_from_terminal():
@@ -32,12 +32,14 @@ def read_from_file():
     Primeira linha: numero de vertices numero de arestas
     Segunda linha em diante sao as arestas no formato:
     vertice1 vertice2.'''
-    file_name = "graphFile.txt"#input("Nome do arquivo de input: ")
+    file_name = "graphFile2.txt"#input("Nome do arquivo de input: ")
 
     graph = archive.read_graph_file(file_name)
 
     print(graph)
-    pyvis_visualization(graph)
+    x = graph.get_raio_diametro()
+    print(x)
+    #pyvis_visualization(graph)
     # pyvis_visualization_sssp(graph, 2, 6)
         
             
@@ -127,27 +129,27 @@ def pyvis_visualization(graph: Type[Graph]) -> None:
     
     n.write_html("graph.html", open_browser=True)
 
-def get_shortest_path(graph: Type[Graph], src_id: int, dest_id: int) -> Dict:
-    nodes_with_cost = dijkstra_undirected(graph, src_id, False)
-    vertices = []
-    edges = []
-    tmp = dest_id
+# def get_shortest_path(graph: Type[Graph], src_id: int, dest_id: int) -> Dict:
+#     nodes_with_cost = dijkstra_undirected(graph, src_id, False)
+#     vertices = []
+#     edges = []
+#     tmp = dest_id
 
-    for node in nodes_with_cost:
-        if node.vertex.id == dest_id:
-            tmp = node
-            cost = node.get_cost()
-            break
+#     for node in nodes_with_cost:
+#         if node.vertex.id == dest_id:
+#             tmp = node
+#             cost = node.get_cost()
+#             break
     
-    while tmp.prev_node:
-        edges.insert(0, graph.get_edge(tmp.vertex, tmp.prev_node.vertex))
-        vertices.insert(0, tmp.vertex)
-        tmp = tmp.prev_node
-        if not tmp.prev_node:
-            vertices.insert(0, tmp.vertex)
+#     while tmp.prev_node:
+#         edges.insert(0, graph.get_edge(tmp.vertex, tmp.prev_node.vertex))
+#         vertices.insert(0, tmp.vertex)
+#         tmp = tmp.prev_node
+#         if not tmp.prev_node:
+#             vertices.insert(0, tmp.vertex)
 
-    result = {'edges': edges, 'vertices': vertices, 'cost': cost}
-    return result
+#     result = {'edges': edges, 'vertices': vertices, 'cost': cost}
+#     return result
 
 def pyvis_visualization_sssp(graph: Type[Graph], src_id: int, dest_id: int) -> None:
 
@@ -167,6 +169,42 @@ def pyvis_visualization_sssp(graph: Type[Graph], src_id: int, dest_id: int) -> N
                     width=5 if is_highlighted else 2)
     
     n.write_html("graph.html", open_browser=True)
+
+# def excentricidade(graph:Graph, vertex_src: Vertex) -> int:
+#     '''Recebe um grafo e o vertice o qual se deseja a excentricidade'''
+#     biggest_path = -1
+
+#     for vertex in graph.get_vertices():
+
+#         if vertex.get_id() == vertex_src.get_id(): 
+#             continue
+
+#         result = get_shortest_path(graph, vertex_src.get_id(), vertex.get_id()).get("cost")
+
+#         if result > biggest_path:
+#             biggest_path = result
+    
+#     return biggest_path
+
+# def get_raio_diametro(graph:Graph) -> Dict:
+#     '''Recebe um grafo e retorna um dicionario contendo o raio e o diametro do grafo'''
+#     raio = -1
+#     diametro = -1
+
+#     exentricidades = list(map(lambda vertex_src: excentricidade(graph, vertex_src), graph.get_vertices()))
+
+#     exentricidades.sort()
+
+#     raio = exentricidades[0]
+#     diametro = exentricidades[-1]
+
+#     result = {"raio": raio, "diametro": diametro}
+#     return result
+
+
+
+
+
 
 # read_from_terminal()
 read_from_file()

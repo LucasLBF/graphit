@@ -2,7 +2,7 @@ from entities.Vertex import Vertex
 from entities.Edge import Edge
 from entities.errors import GraphCycleError, MultiEdgeError
 from typing import Optional, Dict, List, Type
-
+from util import DjkstraStrategy
 class Graph():
     def __init__(self, is_directed):
         self.is_directed = is_directed
@@ -133,6 +133,61 @@ class Graph():
             if edge.check_if_vertex_exists(vertex):
                 neighbors.append(edge)
         return neighbors
+    
+    
+    def get_shortest_path(self, src_id: int, dest_id: int) -> Dict:
+        '''Retorna o menor caminho entre dois vertices'''
+        nodes_with_cost = DjkstraStrategy.dijkstra_undirected(self, src_id, False)
+        vertices = []
+        edges = []
+        tmp = dest_id
+
+        for node in nodes_with_cost:
+            if node.vertex.id == dest_id:
+                tmp = node
+                cost = node.get_cost()
+                break
+        
+        while tmp.prev_node:
+            edges.insert(0, self.get_edge(tmp.vertex, tmp.prev_node.vertex))
+            vertices.insert(0, tmp.vertex)
+            tmp = tmp.prev_node
+            if not tmp.prev_node:
+                vertices.insert(0, tmp.vertex)
+
+        result = {'edges': edges, 'vertices': vertices, 'cost': cost}
+        return result
+    
+    def excentricidade(self, vertex_src: Vertex) -> int:
+        '''Recebe o vertice o qual se deseja a excentricidade'''
+        biggest_path = -1
+
+        for vertex in self.get_vertices():
+
+            if vertex.get_id() == vertex_src.get_id(): 
+                continue
+
+            result = self.get_shortest_path(vertex_src.get_id(), vertex.get_id()).get("cost")
+
+            if result > biggest_path:
+                biggest_path = result
+        
+        return biggest_path
+
+    def get_raio_diametro(self) -> Dict:
+        '''Retorna um dicionario contendo o raio e o diametro do grafo'''
+        raio = -1
+        diametro = -1
+
+        exentricidades = list(map(lambda vertex_src: self.excentricidade(vertex_src), self.get_vertices()))
+
+        exentricidades.sort()
+
+        raio = exentricidades[0]
+        diametro = exentricidades[-1]
+
+        result = {"raio": raio, "diametro": diametro}
+        return result
 
     def __repr__(self) -> str:
         '''Mostra o grafo como uma matrix de adjacencia usando o print().
