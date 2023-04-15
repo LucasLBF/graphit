@@ -36,7 +36,7 @@ def read_graph_file(fileName:str) -> Graph:
                         for line in lines[vertex_start:graph_start-1]:
                                 line = line.strip()
                                 if(not(line == "") and not line.startswith('#')): 
-                                        graph.add_vertex(line.strip())
+                                        graph.add_vertex(int(line.strip()))
 
                                 elif line == "":
                                         break
@@ -52,9 +52,9 @@ def read_graph_file(fileName:str) -> Graph:
                         if (bool(valued_graph)):
                                 
                                 vertex1, vertex2, weight = list(map(lambda x: x.strip(), line.split(';')))
-                                graph.add_edge(vertex1, vertex2, int(weight))
+                                graph.add_edge(int(vertex1), int(vertex2), int(weight))
                         else:
                                 vertex1, vertex2 = list(map(lambda x: x.strip(), line.split(';')))
-                                graph.add_edge(vertex1, vertex2)
+                                graph.add_edge(int(vertex1), int(vertex2))
 
         return graph

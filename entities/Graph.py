@@ -8,6 +8,31 @@ class Graph():
         self.is_directed = is_directed
         self.vertices = []
         self.edges = []
+
+    def get_edges(self) -> List[Type[Edge]]:
+        '''Informa todas as arestas do grafo'''
+
+        return self.edges
+    
+    def get_edge(self, dest_vertex: Type[Vertex], src_vertex: Type[Vertex]) -> Type[Edge]:
+        '''Informa a aresta dados dois vertices. Primeiro vertice e o de destino,
+        e o segundo e o de origem'''
+        if self.is_directed:
+            for edge in self.edges:
+                    if (edge.second_vertex == dest_vertex and
+                         edge.first_vertex == src_vertex):
+                        return edge
+        else:
+            for edge in self.edges:
+                if (edge.check_if_vertex_exists(src_vertex) and
+                    edge.check_if_vertex_exists(dest_vertex)):
+                    return edge
+
+    
+    def get_vertices(self) -> List[Type[Vertex]]:
+        '''Informa todos os vertices do grafo'''
+
+        return self.vertices
     
     def get_order(self) -> int:
         '''Informa a ordem do grafo'''
@@ -31,7 +56,7 @@ class Graph():
         for vertex in self.vertices:
             if vertex.id == vertex_id:
                 return vertex
-    
+
 
     def add_edge(self,
                 vertex_1: int,
@@ -100,6 +125,13 @@ class Graph():
         for edge in self.edges:
             if edge.check_if_vertex_exists(vertex):
                 neighbors.append(edge.get_neighbor_vertex(vertex))
+        return neighbors
+    
+    def get_neighbors_edges(self, vertex: Type) -> List[Type[Edge]]:
+        neighbors = []
+        for edge in self.edges:
+            if edge.check_if_vertex_exists(vertex):
+                neighbors.append(edge)
         return neighbors
 
     def __repr__(self) -> str:

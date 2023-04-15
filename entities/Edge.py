@@ -1,5 +1,6 @@
 from typing import Type
 from entities.Vertex import Vertex
+from typing import Optional, Dict, List, Type
 
 class Edge():
     '''Quando a aresta e direcionada (arco), first_vertex e o vertice de
@@ -14,6 +15,15 @@ class Edge():
         self.second_vertex = vertex_2
         self.weight = weight
     
+    def get_weight(self) -> int:
+        '''Retorna o peso da aresta'''
+       
+        return self.weight
+    
+    def get_vertex(self) -> List[Type[Vertex]]:
+        '''Retorna a lista dos dois vertices da aresta'''
+        return [self.first_vertex, self.second_vertex]
+
     def check_if_vertex_exists(self, vertex: Type[Vertex]) -> bool:
         '''Dado um vertice, verifica se ele esta incluso nessa aresta'''
         return vertex == self.first_vertex or vertex == self.second_vertex
@@ -37,3 +47,9 @@ class Edge():
                 return True
         
         return False
+    
+    def __repr__(self):
+        if self.is_directed:
+            return f"(Aresta {self.first_vertex} -> {self.second_vertex})"
+        else:
+            return f"(Aresta {self.first_vertex} - {self.second_vertex})"

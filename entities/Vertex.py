@@ -10,4 +10,7 @@ class Vertex():
     
     def __repr__(self) -> str:
         return f"(Vertice {self.id})"
-        
+    
+    def get_id(self) -> id:
+        return self.id
+    
