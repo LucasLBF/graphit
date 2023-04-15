@@ -31,16 +31,17 @@ def read_from_file():
     Primeira linha: numero de vertices numero de arestas
     Segunda linha em diante sao as arestas no formato:
     vertice1 vertice2.'''
-    # file_name = input("Nome do arquivo de input: ")
+    file_number = str(input("Numero do arquivo de input: "))
+    file_name = "./test_files/test_" + file_number + ".txt"
 
-    #is_directed_input = input("Grafo direcionado? (y/n): ")
-    #is_directed = True if is_directed_input == 'y' else False
-    is_directed = False
+    is_directed_input = input("Grafo direcionado? (y/n): ")
+    is_directed = True if is_directed_input == 'y' else False
+    # is_directed = False
 
     graph = Graph(is_directed)
 
-    # with open(file_name, 'r') as f:
-    with open('./test_files/test_4.txt', 'r') as f:
+    with open(file_name, 'r') as f:
+    # with open('./test_files/test_4.txt', 'r') as f:
         num_vertices, num_edges = map(int, f.readline().split())
 
         for i in range(num_vertices):
@@ -51,10 +52,10 @@ def read_from_file():
             graph.add_edge(u, v)
 
     # Teste lendo o test_4
-    dijkstra_undirected(graph, 1, True)
+    # dijkstra_undirected(graph, 1)
     # menor_caminho(3, 6, graph)
     # pyvis_visualization(graph)
-    # pyvis_visualization_sssp(graph, 1, 6)
+    pyvis_visualization_sssp(graph, 1, 6)
     # get_shortest_path(graph, 3, 6)
         
             
@@ -140,7 +141,7 @@ def pyvis_visualization(graph: Type[Graph]) -> None:
         n.add_node(vertex.id, label=str(vertex.id))
     
     for edge in graph.get_edges():
-        n.add_edge(edge.first_vertex.id, edge.second_vertex.id, color='red', width=5)
+        n.add_edge(edge.first_vertex.id, edge.second_vertex.id, width=3)
     
     n.write_html("graph.html", open_browser=True)
 
