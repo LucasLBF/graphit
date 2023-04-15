@@ -47,3 +47,9 @@ class Edge():
                 return True
         
         return False
+    
+    def __repr__(self):
+        if self.is_directed:
+            return f"(Aresta {self.first_vertex} -> {self.second_vertex})"
+        else:
+            return f"(Aresta {self.first_vertex} - {self.second_vertex})"

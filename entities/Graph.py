@@ -14,6 +14,21 @@ class Graph():
 
         return self.edges
     
+    def get_edge(self, dest_vertex: Type[Vertex], src_vertex: Type[Vertex]) -> Type[Edge]:
+        '''Informa a aresta dados dois vertices. Primeiro vertice e o de destino,
+        e o segundo e o de origem'''
+        if self.is_directed:
+            for edge in self.edges:
+                    if (edge.second_vertex == dest_vertex and
+                         edge.first_vertex == src_vertex):
+                        return edge
+        else:
+            for edge in self.edges:
+                if (edge.check_if_vertex_exists(src_vertex) and
+                    edge.check_if_vertex_exists(dest_vertex)):
+                    return edge
+
+    
     def get_vertices(self) -> List[Type[Vertex]]:
         '''Informa todos os vertices do grafo'''
 
