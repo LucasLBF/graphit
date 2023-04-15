@@ -137,7 +137,7 @@ class Graph():
     
     def get_shortest_path(self, src_id: int, dest_id: int) -> Dict:
         '''Retorna o menor caminho entre dois vertices'''
-        nodes_with_cost = DjkstraStrategy.dijkstra_undirected(self, src_id, False)
+        nodes_with_cost = DjkstraStrategy.execute(self, src_id, False)
         vertices = []
         edges = []
         tmp = dest_id

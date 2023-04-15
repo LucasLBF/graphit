@@ -9,13 +9,23 @@ from entities.Vertex import Vertex
     #     self.graph = graph
 
 
-def execute(graph:Graph, vertex_src: int, vertex_dest: int, print_output: bool = False) -> Dict:
+# def execute(graph:Graph, vertex_src: int, vertex_dest: int, print_output: bool = False) -> Dict:
+#     '''Metodo de execucao do algoritmo'''
+#     if graph.is_directed:
+#         nodes_with_cost = graph.dijkstra_directed(vertex_src)
+            
+#     else:
+#         nodes_with_cost = graph.dijkstra_undirected(vertex_src)
+def execute(graph:Graph, vertex_src: int, print_output: bool = False) -> Dict:
     '''Metodo de execucao do algoritmo'''
+    nodes_with_cost = None
     if graph.is_directed:
-        nodes_with_cost = graph.dijkstra_directed(vertex_src)
+        nodes_with_cost = dijkstra_directed(graph, vertex_src, print_output)
             
     else:
-        nodes_with_cost = graph.dijkstra_undirected(vertex_src)
+        nodes_with_cost = dijkstra_undirected(graph, vertex_src, print_output)
+        
+    return  nodes_with_cost
 
 def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
     '''Recebe uma lista de nodes e um vertice, retorna se o vertice esta na lista'''
