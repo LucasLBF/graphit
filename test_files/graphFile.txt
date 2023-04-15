@@ -1,17 +1,22 @@
+#lines starting with '#' are going to be jumped
 DIRECTED: True
 
 VALUED GRAPH: True
 
-VERTEXS: 6
+VERTEXS:
+       1
+       4
+       7
 
-EDGES: 7
 
+
+       
 GRAPH:
-       #Vertex1 Vertex2 Weight
-        1       4       7
-        2       3       5
-        2       4       9
-        3       4       9
-        4       5       7
-        4       6       6
-        5       6       9
+     #V1;V2;We
+        1;4;7
+        2;3;5
+        2;4;9
+        3;4;9
+        4;5;7
+        4;6;6
+        5;6;9
