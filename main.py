@@ -40,13 +40,11 @@ def read_from_file():
     #graph.set_shortest_path_strategy(DjkstraStrategy(graph))
 
     graph.set_djkstra_strategy(DjkstraStrategy(graph))
-    #print(graph)
+    print(graph)
     x = graph.get_raio_diametro()
     print(x)
     #pyvis_visualization(graph)
-    # pyvis_visualization_sssp(graph, 2, 6)
-    # pyvis_visualization(graph)
-    #pyvis_visualization_sssp(graph, 2, 6)
+    pyvis_visualization_sssp(graph, 2, 6)
         
             
 def pyvis_visualization(graph: Type[Graph]) -> None:
