@@ -66,14 +66,14 @@ class DjkstraStrategy():
                 print()
         return nodes_with_cost
     
-    def dijkstra_directed(self, vertex_src: int, print_output: bool = True) -> List[Type[Node]]:
+    def djkstra_directed(self, vertex_src: int, print_output: bool = True) -> List[Type[Node]]:
         raise NotImplementedError
 
     def get_shortest_path_djkstra(self, src_id: int, dest_id: int) -> Dict:
         if self.graph.is_directed:
-            nodes_with_cost = self.dijkstra_directed(src_id, False)
+            nodes_with_cost = self.djkstra_directed(src_id, False)
         else:
-            nodes_with_cost = self.dijkstra_undirected(src_id, False)
+            nodes_with_cost = self.djkstra_undirected(src_id, False)
 
         vertices = []
         edges = []
