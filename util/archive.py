@@ -30,7 +30,7 @@ def read_graph_file(fileName:str) -> Graph:
                                 graph_start = lines.index(line+"\n")+1;
                                 break
                 
-                graph = Graph(bool(directed))
+                graph = Graph(True if directed == "TRUE" else False)
 
                 if (vertex_start != -1):
                         for line in lines[vertex_start:graph_start-1]:
@@ -49,7 +49,7 @@ def read_graph_file(fileName:str) -> Graph:
 
                         vertex1, vertex2, weight = 0,0,0
 
-                        if (bool(valued_graph)):
+                        if (valued_graph == "TRUE"):
                                 
                                 vertex1, vertex2, weight = list(map(lambda x: x.strip(), line.split(';')))
                                 graph.add_edge(int(vertex1), int(vertex2), int(weight))

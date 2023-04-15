@@ -2,12 +2,23 @@ from entities.Vertex import Vertex
 from entities.Edge import Edge
 from entities.errors import GraphCycleError, MultiEdgeError
 from typing import Optional, Dict, List, Type
-from util import DjkstraStrategy
+from entities.Node import Node
 class Graph():
     def __init__(self, is_directed):
         self.is_directed = is_directed
         self.vertices = []
         self.edges = []
+
+    def set_shortest_path_strategy(self, strategy: object) -> None:
+        '''Determina qual algoritmo de menor caminho sera utilizado pelo grafo.
+        Aceita um objeto Strategy'''
+        self.strategy = strategy
+
+    def set_djkstra_strategy(self, djkstra) -> None:
+        self.djkstra_strategy = djkstra
+    
+    def get_shortest_path(self, src_vertex: int, dest_vertex: int) -> Dict:
+        return self.strategy.execute(src_vertex, dest_vertex)
 
     def get_edges(self) -> List[Type[Edge]]:
         '''Informa todas as arestas do grafo'''
@@ -134,43 +145,13 @@ class Graph():
                 neighbors.append(edge)
         return neighbors
     
-    
-    def get_shortest_path(self, src_id: int, dest_id: int) -> Dict:
-        '''Retorna o menor caminho entre dois vertices'''
-        nodes_with_cost = DjkstraStrategy.execute(self, src_id, False)
-        vertices = []
-        edges = []
-        tmp = dest_id
-
-        for node in nodes_with_cost:
-            if node.vertex.id == dest_id:
-                tmp = node
-                cost = node.get_cost()
-                break
-        
-        while tmp.prev_node:
-            edges.insert(0, self.get_edge(tmp.vertex, tmp.prev_node.vertex))
-            vertices.insert(0, tmp.vertex)
-            tmp = tmp.prev_node
-            if not tmp.prev_node:
-                vertices.insert(0, tmp.vertex)
-
-        result = {'edges': edges, 'vertices': vertices, 'cost': cost}
-        return result
-    
     def excentricidade(self, vertex_src: Vertex) -> int:
         '''Recebe o vertice o qual se deseja a excentricidade'''
         biggest_path = -1
 
-        for vertex in self.get_vertices():
+        djkstra: List[Type[Node]] = self.djkstra_strategy.djkstra_undirected(vertex_src.get_id())
 
-            if vertex.get_id() == vertex_src.get_id(): 
-                continue
-
-            result = self.get_shortest_path(vertex_src.get_id(), vertex.get_id()).get("cost")
-
-            if result > biggest_path:
-                biggest_path = result
+        biggest_path = sorted(djkstra)[-1].get_cost()
         
         return biggest_path
 
