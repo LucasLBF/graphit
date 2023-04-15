@@ -1,15 +1,11 @@
 #lines starting with '#' are going to be jumped
-DIRECTED: True
+DIRECTED: False
 
 VALUED GRAPH: True
 
 VERTEXS:
        1
        4
-       7
-
-
-
        
 GRAPH:
      #V1;V2;We
@@ -20,3 +16,4 @@ GRAPH:
         4;5;7
         4;6;6
         5;6;9
+        7;1;11

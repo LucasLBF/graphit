@@ -11,13 +11,9 @@ class DjkstraStrategy():
 
     def execute(self, vertex_src: int, vertex_dest: int, print_output: bool = False) -> Dict:
         '''Metodo de execucao do algoritmo'''
-        if self.graph.is_directed:
-            nodes_with_cost = self.dijkstra_directed(vertex_src)
-            
-        else:
-            nodes_with_cost = self.dijkstra_undirected(vertex_src)
+        return self.get_shortest_path_djkstra(vertex_src, vertex_dest)
 
-    def node_in(lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
+    def node_in(self, lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
         '''Recebe uma lista de nodes e um vertice, retorna se o vertice esta na lista'''
         end = [False, None]
         for node in lista:
@@ -26,7 +22,7 @@ class DjkstraStrategy():
                 break
         return end
             
-    def dijkstra_undirected(self, vertex_src: int, print_output: bool = False) -> List[Type[Node]]:
+    def djkstra_undirected(self, vertex_src: int, print_output: bool = False) -> List[Type[Node]]:
         '''Recebe o grafo e o vertice de origem, retorna o 
         menor caminho de cada vertice em relacao a origem'''
         num_vertices = self.graph.get_order()
@@ -71,4 +67,30 @@ class DjkstraStrategy():
         return nodes_with_cost
     
     def dijkstra_directed(self, vertex_src: int, print_output: bool = True) -> List[Type[Node]]:
-        pass
+        raise NotImplementedError
+
+    def get_shortest_path_djkstra(self, src_id: int, dest_id: int) -> Dict:
+        if self.graph.is_directed:
+            nodes_with_cost = self.dijkstra_directed(src_id, False)
+        else:
+            nodes_with_cost = self.dijkstra_undirected(src_id, False)
+
+        vertices = []
+        edges = []
+        tmp = dest_id
+
+        for node in nodes_with_cost:
+            if node.vertex.id == dest_id:
+                tmp = node
+                cost = node.get_cost()
+                break
+            
+        while tmp.prev_node:
+            edges.insert(0, self.graph.get_edge(tmp.vertex, tmp.prev_node.vertex))
+            vertices.insert(0, tmp.vertex)
+            tmp = tmp.prev_node
+            if not tmp.prev_node:
+                vertices.insert(0, tmp.vertex)
+
+        result = {'edges': edges, 'vertices': vertices, 'cost': cost}
+        return result

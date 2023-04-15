@@ -2,12 +2,23 @@ from entities.Vertex import Vertex
 from entities.Edge import Edge
 from entities.errors import GraphCycleError, MultiEdgeError
 from typing import Optional, Dict, List, Type
-
+from entities.Node import Node
 class Graph():
     def __init__(self, is_directed):
         self.is_directed = is_directed
         self.vertices = []
         self.edges = []
+
+    def set_shortest_path_strategy(self, strategy: object) -> None:
+        '''Determina qual algoritmo de menor caminho sera utilizado pelo grafo.
+        Aceita um objeto Strategy'''
+        self.strategy = strategy
+
+    def set_djkstra_strategy(self, djkstra) -> None:
+        self.djkstra_strategy = djkstra
+    
+    def get_shortest_path(self, src_vertex: int, dest_vertex: int) -> Dict:
+        return self.strategy.execute(src_vertex, dest_vertex)
 
     def get_edges(self) -> List[Type[Edge]]:
         '''Informa todas as arestas do grafo'''
@@ -133,6 +144,31 @@ class Graph():
             if edge.check_if_vertex_exists(vertex):
                 neighbors.append(edge)
         return neighbors
+    
+    def excentricidade(self, vertex_src: Vertex) -> int:
+        '''Recebe o vertice o qual se deseja a excentricidade'''
+        biggest_path = -1
+
+        djkstra: List[Type[Node]] = self.djkstra_strategy.djkstra_undirected(vertex_src.get_id())
+
+        biggest_path = sorted(djkstra)[-1].get_cost()
+        
+        return biggest_path
+
+    def get_raio_diametro(self) -> Dict:
+        '''Retorna um dicionario contendo o raio e o diametro do grafo'''
+        raio = -1
+        diametro = -1
+
+        exentricidades = list(map(lambda vertex_src: self.excentricidade(vertex_src), self.get_vertices()))
+
+        exentricidades.sort()
+
+        raio = exentricidades[0]
+        diametro = exentricidades[-1]
+
+        result = {"raio": raio, "diametro": diametro}
+        return result
 
     def __repr__(self) -> str:
         '''Mostra o grafo como uma matrix de adjacencia usando o print().

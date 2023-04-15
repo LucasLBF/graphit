@@ -48,4 +48,7 @@ class Node():
         '''Muda o status do node'''
         self.is_closed = status
 
+    def __lt__(self, other: "Node") -> bool:
+        return self.cost < other.cost
+
    
