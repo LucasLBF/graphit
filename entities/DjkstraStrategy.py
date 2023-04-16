@@ -11,9 +11,16 @@ class DjkstraStrategy():
         self.graph = graph
 
 
-    def execute(self, vertex_src: int, vertex_dest: int, print_output: bool = False) -> Dict:
+    def execute(self, vertex_src: int, vertex_dest: int) -> Dict:
         '''Metodo de execucao do algoritmo'''
-        return self.get_shortest_path_djkstra(vertex_src, vertex_dest)
+        nodes_with_cost = self.djkstra_algorithm(vertex_src)
+        dest_node = nodes_with_cost[vertex_dest]
+
+        if not dest_node.is_connected:
+            return {}
+        else:
+            return {'edges': dest_node.prev_edges, 'vertices': [node.vertex for node in dest_node.prev_nodes] + [dest_node.vertex], 'cost': dest_node.cost}
+        # return self.get_shortest_path_djkstra(vertex_src, vertex_dest)
 
     def node_in(self, lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
         '''Recebe uma lista de nodes e um vertice, retorna se o vertice esta na lista'''
@@ -82,9 +89,10 @@ class DjkstraStrategy():
 
         curr_node = nodes[vertex_src]
         curr_node.cost = 0
+        curr_node.is_connected = True
         heap = []
 
-        while len(closed_nodes) != TOTAL_VERTICES - 1:
+        while len(closed_nodes) != TOTAL_VERTICES:
             if self.graph.is_directed:
                 adj_edges = self.graph.get_neighbors(curr_node.vertex, out_neighbors=True)['out_neighbors']['edges']
             else:
@@ -103,18 +111,18 @@ class DjkstraStrategy():
                     if not nodes[neighbor_vertex_id].is_in_heap:
                         heappush(heap, (nodes[neighbor_vertex_id].cost, nodes[neighbor_vertex_id]))
                         nodes[neighbor_vertex_id].is_in_heap = True
+                        nodes[neighbor_vertex_id].is_connected = True
                 
             heapify(heap)
-            print(heap)
+
+            if len(closed_nodes) == TOTAL_VERTICES:
+                continue
+
+            if len(heap) == 0 and len(closed_nodes) != TOTAL_VERTICES:
+                break
+
             min_cost_neighbor = heap[0][1]
             heappop(heap)
             curr_node = min_cost_neighbor
 
         return nodes
-
-
-    def get_shortest_path_djkstra(self, src_id: int, dest_id: int) -> Dict:
-        nodes_with_cost = self.djkstra_algorithm(src_id)
-        dest_node = nodes_with_cost[dest_id]
-        result = {'edges': dest_node.prev_edges, 'vertices': [node.vertex for node in dest_node.prev_nodes] + [dest_node.vertex], 'cost': dest_node.cost}
-        return result
