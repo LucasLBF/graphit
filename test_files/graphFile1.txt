@@ -1,5 +1,5 @@
 #lines starting with '#' are going to be jumped
-DIRECTED: False
+DIRECTED: True
 
 VALUED GRAPH: True
 

@@ -2,6 +2,8 @@ from typing import Dict, List, Type, Union
 from entities.Graph import Graph
 from entities.Node import Node
 from entities.Vertex import Vertex
+import sys
+from heapq import heapify, heappush, heappop
 
 
 class DjkstraStrategy():
@@ -9,9 +11,15 @@ class DjkstraStrategy():
         self.graph = graph
 
 
-    def execute(self, vertex_src: int, vertex_dest: int, print_output: bool = False) -> Dict:
+    def execute(self, vertex_src: int, vertex_dest: int) -> Dict:
         '''Metodo de execucao do algoritmo'''
-        return self.get_shortest_path_djkstra(vertex_src, vertex_dest)
+        nodes_with_cost = self.djkstra_algorithm(vertex_src)
+        dest_node = nodes_with_cost[vertex_dest]
+
+        if not dest_node.is_connected:
+            return {}
+        else:
+            return {'edges': dest_node.prev_edges, 'vertices': [node.vertex for node in dest_node.prev_nodes] + [dest_node.vertex], 'cost': dest_node.cost}
 
     def node_in(self, lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
         '''Recebe uma lista de nodes e um vertice, retorna se o vertice esta na lista'''
@@ -66,31 +74,54 @@ class DjkstraStrategy():
                 print()
         return nodes_with_cost
     
-    def djkstra_directed(self, vertex_src: int, print_output: bool = True) -> List[Type[Node]]:
-        raise NotImplementedError
+    def djkstra_algorithm(self, vertex_src: int) -> Dict[int, Type[Node]]:
+        '''Recebe um vertice de partida e calcula a sua distancia para todos os outros vertices do grafo'''
+        MAX_COST = sys.maxsize
+        vertices = self.graph.get_vertices()
+        TOTAL_VERTICES = len(vertices)
+        nodes: Dict[int, Type[Node]] = {}
+        closed_nodes: Dict[int, Type[Node]] = {}
 
-    def get_shortest_path_djkstra(self, src_id: int, dest_id: int) -> Dict:
-        if self.graph.is_directed:
-            nodes_with_cost = self.djkstra_directed(src_id, False)
-        else:
-            nodes_with_cost = self.djkstra_undirected(src_id, False)
+        for vertex in vertices:
+            new_node = Node(vertex, MAX_COST, [], [])
+            nodes[vertex.id] = new_node
 
-        vertices = []
-        edges = []
-        tmp = dest_id
+        curr_node = nodes[vertex_src]
+        curr_node.cost = 0
+        curr_node.is_connected = True
+        heap = []
 
-        for node in nodes_with_cost:
-            if node.vertex.id == dest_id:
-                tmp = node
-                cost = node.get_cost()
+        while len(closed_nodes) != TOTAL_VERTICES:
+            if self.graph.is_directed:
+                adj_edges = self.graph.get_neighbors(curr_node.vertex, out_neighbors=True)['out_neighbors']['edges']
+            else:
+                adj_edges = self.graph.get_neighbors(curr_node.vertex)['neighbors']['edges']
+
+            if curr_node.vertex.id not in closed_nodes:
+                closed_nodes[curr_node.vertex.id] = curr_node
+            for edge in adj_edges:
+                neighbor_vertex_id = edge.get_neighbor_vertex(curr_node.vertex).id
+                if neighbor_vertex_id not in closed_nodes:
+                    if nodes[neighbor_vertex_id].cost > curr_node.cost + edge.weight:
+                        neighbor = nodes[neighbor_vertex_id]
+                        neighbor.cost = curr_node.cost + edge.weight
+                        neighbor.prev_nodes = curr_node.prev_nodes + [curr_node]
+                        neighbor.prev_edges = curr_node.prev_edges + [edge]
+                    if not nodes[neighbor_vertex_id].is_in_heap:
+                        heappush(heap, (nodes[neighbor_vertex_id].cost, nodes[neighbor_vertex_id]))
+                        nodes[neighbor_vertex_id].is_in_heap = True
+                        nodes[neighbor_vertex_id].is_connected = True
+                
+            heapify(heap)
+
+            if len(closed_nodes) == TOTAL_VERTICES:
+                continue
+
+            if len(heap) == 0 and len(closed_nodes) != TOTAL_VERTICES:
                 break
-            
-        while tmp.prev_node:
-            edges.insert(0, self.graph.get_edge(tmp.vertex, tmp.prev_node.vertex))
-            vertices.insert(0, tmp.vertex)
-            tmp = tmp.prev_node
-            if not tmp.prev_node:
-                vertices.insert(0, tmp.vertex)
 
-        result = {'edges': edges, 'vertices': vertices, 'cost': cost}
-        return result
+            min_cost_neighbor = heap[0][1]
+            heappop(heap)
+            curr_node = min_cost_neighbor
+
+        return nodes
