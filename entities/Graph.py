@@ -9,10 +9,10 @@ class Graph():
         self.vertices = []
         self.edges = []
 
-    def set_shortest_path_strategy(self, strategy: object) -> None:
-        '''Determina qual algoritmo de menor caminho sera utilizado pelo grafo.
-        Aceita um objeto Strategy'''
-        self.strategy = strategy
+    # def set_shortest_path_strategy(self, strategy: object) -> None:
+    #     '''Determina qual algoritmo de menor caminho sera utilizado pelo grafo.
+    #     Aceita um objeto Strategy'''
+    #     self.strategy = strategy
 
     def set_djkstra_strategy(self, djkstra) -> None:
         self.djkstra_strategy = djkstra
@@ -101,7 +101,8 @@ class Graph():
     def get_neighbors(self,
                     vertex: Type[Vertex],
                     in_neighbors: bool = False,
-                    out_neighbors: bool = False) -> Dict[str, List[Type[Vertex]]]:
+                    # out_neighbors: bool = False) -> Dict[str, List[Type[Vertex]]]:
+                    out_neighbors: bool = False) -> Dict[str, Dict[str, List[object]]]:
         result = {}
 
         if self.is_directed:
@@ -114,36 +115,50 @@ class Graph():
             result['neighbors'] = self.get_neighbors_undirected(vertex)
         return result
                 
-    def get_in_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
+    # def get_in_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
+    def get_in_neighbors(self, vertex: Type[Vertex]) -> Dict:
         '''Retorna uma lista de vizinhança de entrada (grafos direcionados)'''
-        in_neighbors = []
+        # in_neighbors = []
+        in_neighbors = {'vertices': [], 'edges': []}
         for edge in self.edges:
             if edge.is_directed and edge.second_vertex == vertex:
-                in_neighbors.append(edge.get_neighbor_vertex(vertex))
+                # in_neighbors.append(edge.get_neighbor_vertex(vertex))
+                in_neighbors["vertices"].append(edge.get_neighbor_vertex(vertex))
+                in_neighbors["edges"].append(edge)
         return in_neighbors
 
-    def get_out_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
+    # def get_out_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
+    def get_out_neighbors(self, vertex: Type[Vertex]) -> Dict:
         '''Retorna uma lista de vizinhança de saida (grafos direcionados)'''
-        out_neighbors = []
+        # out_neighbors = []
+        out_neighbors = {'vertices': [], 'edges': []}
         for edge in self.edges:
             if edge.is_directed and edge.first_vertex == vertex:
-                out_neighbors.append(edge.get_neighbor_vertex(vertex))
+                # out_neighbors.append(edge.get_neighbor_vertex(vertex))
+                out_neighbors["vertices"].append(edge.get_neighbor_vertex(vertex))
+                out_neighbors["edges"].append(edge)
         return out_neighbors
     
-    def get_neighbors_undirected(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
+    # def get_neighbors_undirected(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
+    def get_neighbors_undirected(self, vertex: Type[Vertex]) -> Dict:
         '''Retorna uma lista de vizinhança (grafos nao direcionados)'''
-        neighbors = []
+        # neighbors = []
+        neighbors = {'vertices': [], 'edges': []}
         for edge in self.edges:
             if edge.check_if_vertex_exists(vertex):
-                neighbors.append(edge.get_neighbor_vertex(vertex))
+                # neighbors.append(edge.get_neighbor_vertex(vertex))
+                neighbors['vertices'].append(edge.get_neighbor_vertex(vertex))
+                neighbors['edges'].append(edge)
         return neighbors
     
-    def get_neighbors_edges(self, vertex: Type) -> List[Type[Edge]]:
+    def get_neighbors_edges(self, vertex: Type[Vertex]) -> List[Type[Edge]]:
         neighbors = []
         for edge in self.edges:
             if edge.check_if_vertex_exists(vertex):
                 neighbors.append(edge)
+        
         return neighbors
+
     
     def excentricidade(self, vertex_src: Vertex) -> int:
         '''Recebe o vertice o qual se deseja a excentricidade'''
@@ -178,16 +193,16 @@ class Graph():
         if self.is_directed:
             for row in sorted_vertices:
                 vertex_edges = []
-                vertex_neighbors = self.get_neighbors(row, out_neighbors=True)
+                vertex_neighbors = self.get_neighbors(row, out_neighbors=True)['out_neighbors']['vertices']
                 for column in sorted_vertices:
-                    vertex_edges.append(1 if column in vertex_neighbors['out_neighbors'] else 0)
+                    vertex_edges.append(1 if column in vertex_neighbors else 0)
                 adjacency_matrix.append(vertex_edges)
         else:
             for row in sorted_vertices:
                 vertex_edges = []
-                vertex_neighbors = self.get_neighbors(row)
+                vertex_neighbors = self.get_neighbors(row)['neighbors']['vertices']
                 for column in sorted_vertices:
-                    vertex_edges.append(1 if column in vertex_neighbors['neighbors'] else 0)
+                    vertex_edges.append(1 if column in vertex_neighbors else 0)
                 adjacency_matrix.append(vertex_edges)
             
         matrix_string = ""

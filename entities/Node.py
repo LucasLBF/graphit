@@ -1,4 +1,5 @@
 from typing import Type
+from entities.Edge import Edge
 from entities.Vertex import Vertex
 from typing import Optional, Dict, List, Type
 
@@ -6,12 +7,15 @@ class Node():
     def __init__(self, vertex: Type[Vertex],
                  cost: int,
                 #  vertex_a: Type[Vertex],
-                prev_node: 'Node',
+                prev_nodes: List['Node'],
+                prev_edges: List[Type[Edge]],
                  closed: bool = False):
         self.vertex = vertex
         self.cost = cost
         # self.vertex_a = vertex_a
-        self.prev_node = prev_node
+        self.prev_nodes = prev_nodes
+        self.prev_edges = prev_edges
+        self.is_in_heap = False
         self.is_closed = closed
 
     def get_vertex(self) -> Type[Vertex]:

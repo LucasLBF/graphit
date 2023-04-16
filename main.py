@@ -33,18 +33,17 @@ def read_from_file():
     Primeira linha: numero de vertices numero de arestas
     Segunda linha em diante sao as arestas no formato:
     vertice1 vertice2.'''
-    file_name = "graphFile2.txt"#input("Nome do arquivo de input: ")
+    file_name = "graphFile3.txt"#input("Nome do arquivo de input: ")
 
     graph = archive.read_graph_file(file_name)
     # adicionar algoritmo de djkstra
-    #graph.set_shortest_path_strategy(DjkstraStrategy(graph))
 
     graph.set_djkstra_strategy(DjkstraStrategy(graph))
     print(graph)
     x = graph.get_raio_diametro()
     print(x)
-    #pyvis_visualization(graph)
-    pyvis_visualization_sssp(graph, 2, 6)
+    # pyvis_visualization(graph)
+    pyvis_visualization_sssp(graph, 1, 7)
         
             
 def pyvis_visualization(graph: Type[Graph]) -> None:

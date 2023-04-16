@@ -2,6 +2,8 @@ from typing import Dict, List, Type, Union
 from entities.Graph import Graph
 from entities.Node import Node
 from entities.Vertex import Vertex
+import sys
+from heapq import heapify, heappush, heappop
 
 
 class DjkstraStrategy():
@@ -66,31 +68,53 @@ class DjkstraStrategy():
                 print()
         return nodes_with_cost
     
-    def djkstra_directed(self, vertex_src: int, print_output: bool = True) -> List[Type[Node]]:
-        raise NotImplementedError
+    def dijkstra_algorithm(self, vertex_src: int, print_output: bool = True) -> Dict[int, Type[Node]]:
+        '''Recebe um vertice de partida e calcula a sua distancia para todos os outros vertices do grafo'''
+        MAX_COST = sys.maxsize
+        vertices = self.graph.get_vertices()
+        TOTAL_VERTICES = len(vertices)
+        nodes: Dict[int, Type[Node]] = {}
+        closed_nodes: Dict[int, Type[Node]] = {}
+
+        for vertex in vertices:
+            new_node = Node(vertex, MAX_COST, [], [])
+            nodes[vertex.id] = new_node
+
+        curr_node = nodes[vertex_src]
+        curr_node.cost = 0
+        heap = []
+
+        while len(closed_nodes) != TOTAL_VERTICES - 1:
+            if self.graph.is_directed:
+                adj_edges = self.graph.get_neighbors(curr_node.vertex, out_neighbors=True)['out_neighbors']['edges']
+            else:
+                adj_edges = self.graph.get_neighbors(curr_node.vertex)['neighbors']['edges']
+
+            if curr_node.vertex.id not in closed_nodes:
+                closed_nodes[curr_node.vertex.id] = curr_node
+            for edge in adj_edges:
+                neighbor_vertex_id = edge.get_neighbor_vertex(curr_node.vertex).id
+                if neighbor_vertex_id not in closed_nodes:
+                    if nodes[neighbor_vertex_id].cost > curr_node.cost + edge.weight:
+                        neighbor = nodes[neighbor_vertex_id]
+                        neighbor.cost = curr_node.cost + edge.weight
+                        neighbor.prev_nodes = curr_node.prev_nodes + [curr_node]
+                        neighbor.prev_edges = curr_node.prev_edges + [edge]
+                    if not nodes[neighbor_vertex_id].is_in_heap:
+                        heappush(heap, (nodes[neighbor_vertex_id].cost, nodes[neighbor_vertex_id]))
+                        nodes[neighbor_vertex_id].is_in_heap = True
+                
+            heapify(heap)
+            # print(heap)
+            min_cost_neighbor = heap[0][1]
+            heappop(heap)
+            curr_node = min_cost_neighbor
+
+        return nodes
+
 
     def get_shortest_path_djkstra(self, src_id: int, dest_id: int) -> Dict:
-        if self.graph.is_directed:
-            nodes_with_cost = self.djkstra_directed(src_id, False)
-        else:
-            nodes_with_cost = self.djkstra_undirected(src_id, False)
-
-        vertices = []
-        edges = []
-        tmp = dest_id
-
-        for node in nodes_with_cost:
-            if node.vertex.id == dest_id:
-                tmp = node
-                cost = node.get_cost()
-                break
-            
-        while tmp.prev_node:
-            edges.insert(0, self.graph.get_edge(tmp.vertex, tmp.prev_node.vertex))
-            vertices.insert(0, tmp.vertex)
-            tmp = tmp.prev_node
-            if not tmp.prev_node:
-                vertices.insert(0, tmp.vertex)
-
-        result = {'edges': edges, 'vertices': vertices, 'cost': cost}
+        nodes_with_cost = self.dijkstra_algorithm(src_id, False)
+        dest_node = nodes_with_cost[dest_id]
+        result = {'edges': dest_node.prev_edges, 'vertices': [node.vertex for node in dest_node.prev_nodes] + [dest_node.vertex], 'cost': dest_node.cost}
         return result
