@@ -123,7 +123,21 @@ class Graph():
         
         return {"degree": len(neighbors.get("neighbors"))}
             
-                
+    def is_vertexs_adjacent(self, vertex_id_1:int, vertex_id_2:int) -> bool:
+        neighbors = self.get_neighbors(self.check_if_vertex_exists(vertex_id_1), True, True)
+        vertex_2 = self.check_if_vertex_exists(vertex_id_2)
+
+        if self.is_directed:
+            neighbors_in = neighbors.get("in_neighbors")
+            neighbors_out = neighbors.get("out_neighbors")
+            return (vertex_2 in neighbors_in) or (vertex_2 in neighbors_out)
+        
+        return vertex_2 in neighbors.get("neighbors")
+
+        
+
+        
+
     def get_in_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
         '''Retorna uma lista de vizinhança de entrada (grafos direcionados)'''
         in_neighbors = []
