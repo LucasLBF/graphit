@@ -114,42 +114,55 @@ class Graph():
         else:
             result['neighbors'] = self.get_neighbors_undirected(vertex)
         return result
-                
-    # def get_in_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
-    def get_in_neighbors(self, vertex: Type[Vertex]) -> Dict:
+
+    def get_in_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
         '''Retorna uma lista de vizinhança de entrada (grafos direcionados)'''
-        # in_neighbors = []
         in_neighbors = {'vertices': [], 'edges': []}
         for edge in self.edges:
             if edge.is_directed and edge.second_vertex == vertex:
-                # in_neighbors.append(edge.get_neighbor_vertex(vertex))
                 in_neighbors["vertices"].append(edge.get_neighbor_vertex(vertex))
                 in_neighbors["edges"].append(edge)
         return in_neighbors
 
-    # def get_out_neighbors(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
     def get_out_neighbors(self, vertex: Type[Vertex]) -> Dict:
         '''Retorna uma lista de vizinhança de saida (grafos direcionados)'''
-        # out_neighbors = []
         out_neighbors = {'vertices': [], 'edges': []}
         for edge in self.edges:
             if edge.is_directed and edge.first_vertex == vertex:
-                # out_neighbors.append(edge.get_neighbor_vertex(vertex))
                 out_neighbors["vertices"].append(edge.get_neighbor_vertex(vertex))
                 out_neighbors["edges"].append(edge)
         return out_neighbors
     
-    # def get_neighbors_undirected(self, vertex: Type[Vertex]) -> List[Type[Vertex]]:
     def get_neighbors_undirected(self, vertex: Type[Vertex]) -> Dict:
         '''Retorna uma lista de vizinhança (grafos nao direcionados)'''
         # neighbors = []
         neighbors = {'vertices': [], 'edges': []}
         for edge in self.edges:
             if edge.check_if_vertex_exists(vertex):
-                # neighbors.append(edge.get_neighbor_vertex(vertex))
                 neighbors['vertices'].append(edge.get_neighbor_vertex(vertex))
                 neighbors['edges'].append(edge)
         return neighbors
+                
+    def get_vertex_degree(self, vertex_id:int) -> Dict:
+        neighbors = self.get_neighbors(self.check_if_vertex_exists(vertex_id), True, True)
+
+        if self.is_directed:
+            return {"in_degree": len(neighbors.get("in_neighbors")),
+                    "out_degree": len(neighbors.get("out_neighbors"))}
+        
+        return {"degree": len(neighbors.get("neighbors"))}
+            
+    def is_vertexs_adjacent(self, vertex_id_1:int, vertex_id_2:int) -> bool:
+        neighbors = self.get_neighbors(self.check_if_vertex_exists(vertex_id_1), True, True)
+        vertex_2 = self.check_if_vertex_exists(vertex_id_2)
+
+        if self.is_directed:
+            neighbors_in = neighbors.get("in_neighbors")
+            neighbors_out = neighbors.get("out_neighbors")
+            return (vertex_2 in neighbors_in) or (vertex_2 in neighbors_out)
+        
+        return vertex_2 in neighbors.get("neighbors")
+        
     
     def get_neighbors_edges(self, vertex: Type[Vertex]) -> List[Type[Edge]]:
         neighbors = []

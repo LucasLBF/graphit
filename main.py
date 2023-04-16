@@ -39,8 +39,14 @@ def read_from_file():
     # adicionar algoritmo de djkstra
 
     graph.set_djkstra_strategy(DjkstraStrategy(graph))
-    print(graph)
-    x = graph.get_raio_diametro()
+
+    #print(graph)
+    #x = graph.get_raio_diametro()
+    #print(x)
+    pyvis_visualization(graph)
+    d = graph.get_vertex_degree(3)
+    print("Grau do vertice 3:", d)
+    x = graph.is_vertexs_adjacent(2,6)
     print(x)
     # pyvis_visualization(graph)
     pyvis_visualization_sssp(graph, 1, 7)
