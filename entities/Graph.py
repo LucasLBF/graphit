@@ -167,10 +167,8 @@ class Graph():
 
     def eccentricity(self, vertex_src: Vertex) -> int:
         '''Recebe o vertice o qual se deseja a excentricidade'''
-        # djkstra: List[Type[Node]] = self.djkstra_strategy.djkstra_undirected(vertex_src.get_id())
-        djkstra_costs = [node.cost for key, node in self.djkstra_strategy.djkstra_algorithm(vertex_src.id).items()]
+        djkstra_costs = [node.cost for _, node in self.djkstra_strategy.djkstra_algorithm(vertex_src.id).items()]
 
-        # biggest_path = sorted(djkstra)[-1].get_cost()
         biggest_path = sorted(djkstra_costs)[-1]
         
         return biggest_path

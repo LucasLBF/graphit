@@ -20,7 +20,6 @@ class DjkstraStrategy():
             return {}
         else:
             return {'edges': dest_node.prev_edges, 'vertices': [node.vertex for node in dest_node.prev_nodes] + [dest_node.vertex], 'cost': dest_node.cost}
-        # return self.get_shortest_path_djkstra(vertex_src, vertex_dest)
 
     def node_in(self, lista: List[Type[Node]], vertex: Type[Vertex]) -> List[Union[bool, Type[Node]]]:
         '''Recebe uma lista de nodes e um vertice, retorna se o vertice esta na lista'''

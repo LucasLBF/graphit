@@ -6,6 +6,7 @@ from entities.DjkstraStrategy import DjkstraStrategy
 from typing import Type, List, Union, Dict
 from pyvis.network import Network
 from util import archive
+import sys
 import time
 
 def read_from_terminal():
@@ -119,7 +120,10 @@ def test_all_files():
 
 
             print(graph)
-            print("Raio e diametro:", graph.get_radius_diameter())
+            radius_diameter = graph.get_radius_diameter()
+            radius = radius_diameter['radius'] 
+            diameter = radius_diameter['diameter']
+            print(f"Raio: {radius if radius != sys.maxsize else 'Infinito'} | Diametro: {diameter if diameter != sys.maxsize else 'Infinito'}", )
             print("Grau do vertice 1:", graph.get_vertex_degree(1))
             print("Vertices 2 e 3 sao adjacentes?", graph.are_vertices_adjacent(2, 3))
             print("Excentricidade do vertice 1:", graph.eccentricity(graph.check_if_vertex_exists(1)))
