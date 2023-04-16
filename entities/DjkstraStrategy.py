@@ -68,7 +68,7 @@ class DjkstraStrategy():
                 print()
         return nodes_with_cost
     
-    def dijkstra_algorithm(self, vertex_src: int, print_output: bool = True) -> Dict[int, Type[Node]]:
+    def djkstra_algorithm(self, vertex_src: int) -> Dict[int, Type[Node]]:
         '''Recebe um vertice de partida e calcula a sua distancia para todos os outros vertices do grafo'''
         MAX_COST = sys.maxsize
         vertices = self.graph.get_vertices()
@@ -105,7 +105,7 @@ class DjkstraStrategy():
                         nodes[neighbor_vertex_id].is_in_heap = True
                 
             heapify(heap)
-            # print(heap)
+            print(heap)
             min_cost_neighbor = heap[0][1]
             heappop(heap)
             curr_node = min_cost_neighbor
@@ -114,7 +114,7 @@ class DjkstraStrategy():
 
 
     def get_shortest_path_djkstra(self, src_id: int, dest_id: int) -> Dict:
-        nodes_with_cost = self.dijkstra_algorithm(src_id, False)
+        nodes_with_cost = self.djkstra_algorithm(src_id)
         dest_node = nodes_with_cost[dest_id]
         result = {'edges': dest_node.prev_edges, 'vertices': [node.vertex for node in dest_node.prev_nodes] + [dest_node.vertex], 'cost': dest_node.cost}
         return result

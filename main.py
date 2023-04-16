@@ -33,7 +33,7 @@ def read_from_file():
     Primeira linha: numero de vertices numero de arestas
     Segunda linha em diante sao as arestas no formato:
     vertice1 vertice2.'''
-    file_name = "graphFile3.txt"#input("Nome do arquivo de input: ")
+    file_name = "graphFile1.txt"#input("Nome do arquivo de input: ")
 
     graph = archive.read_graph_file(file_name)
     # adicionar algoritmo de djkstra
@@ -44,12 +44,14 @@ def read_from_file():
     #x = graph.get_raio_diametro()
     #print(x)
     pyvis_visualization(graph)
-    d = graph.get_vertex_degree(3)
-    print("Grau do vertice 3:", d)
-    x = graph.is_vertexs_adjacent(2,6)
+    d = graph.get_vertex_degree(4)
+    print("Grau do vertice 4:", d)
+    x = graph.are_vertices_adjacent(5, 4)
     print(x)
+    e = graph.eccentricity(graph.check_if_vertex_exists(7))
+    print(e)
     # pyvis_visualization(graph)
-    pyvis_visualization_sssp(graph, 1, 7)
+    # pyvis_visualization_sssp(graph, 1, 7)
         
             
 def pyvis_visualization(graph: Type[Graph]) -> None:
@@ -59,7 +61,7 @@ def pyvis_visualization(graph: Type[Graph]) -> None:
         n.add_node(vertex.id, label=str(vertex.id))
     
     for edge in graph.get_edges():
-        n.add_edge(edge.first_vertex.id, edge.second_vertex.id, width=3)
+        n.add_edge(edge.first_vertex.id, edge.second_vertex.id, width=3, label=str(edge.weight) if edge.weight > 1 else None)
     
     n.write_html("graph.html", open_browser=True)
 
