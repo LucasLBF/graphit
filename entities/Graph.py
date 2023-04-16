@@ -114,7 +114,7 @@ class Graph():
             result['neighbors'] = self.get_neighbors_undirected(vertex)
         return result
     
-    def get_vertex_degree(self, vertex_id:int) -> int:
+    def get_vertex_degree(self, vertex_id:int) -> Dict:
         neighbors = self.get_neighbors(self.check_if_vertex_exists(vertex_id), True, True)
 
         if self.is_directed:
