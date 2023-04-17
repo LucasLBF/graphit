@@ -2,6 +2,9 @@ from django import forms
 from django.shortcuts import render
 from django.http import HttpResponseRedirect
 from django.template import RequestContext
+from django.template.loader import render_to_string
+from django.conf import settings
+import glob, os
 
 def index(request):
     
@@ -25,8 +28,18 @@ def playground(request):
             vertices_2 = form.cleaned_data['vertices_2']
             weights = form.cleaned_data['weights']
 
+            ###################################
+            # IMPLEMENT GRAPH ALGORITHMS CODE #
+            ###################################
+
+            # show graph on side area
+            graph_html_path = glob.glob(os.path.join(settings.BASE_DIR, 'templates/graph/*.html'))
+            graph_generated = render_to_string(graph_html_path[0])
+            # remove generated graph html file
+            os.remove(graph_html_path.pop())
+
             # redirect to a new URL:
-            return render(request, 'playground/index.html', {'form': form})
+            return render(request, 'playground/index.html', {'form': form, 'graph': graph_generated})
 
     # if a GET (or any other method) we'll create a blank form
     else:
