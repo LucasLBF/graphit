@@ -5,11 +5,12 @@ VALUED GRAPH: False
 
 GRAPH:
      #V1;V2
-        1;4
-        2;3
-        2;4
-        3;4
-        4;5
-        4;1
-        4;6
-        5;6
+        A;D
+        B;C
+        B;B
+        B;D
+        C;D
+        D;E
+        D;A
+        D;F
+        E;F
