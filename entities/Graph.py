@@ -12,7 +12,7 @@ class Graph():
     def set_djkstra_strategy(self, djkstra) -> None:
         self.djkstra_strategy = djkstra
     
-    def get_shortest_path(self, src_vertex: int, dest_vertex: int) -> Dict:
+    def get_shortest_path(self, src_vertex: str, dest_vertex: str) -> Dict:
         return self.djkstra_strategy.execute(src_vertex, dest_vertex)
 
     def get_edges(self) -> List[Type[Edge]]:
@@ -50,13 +50,13 @@ class Graph():
 
         return len(self.edges)
 
-    def add_vertex(self, id: int) -> object:
+    def add_vertex(self, id: str) -> object:
         '''Dado um id, cria um vertice e o adiciona no grafo.'''
         new_vertex = Vertex(id)
         self.vertices.append(new_vertex)
         return new_vertex
 
-    def check_if_vertex_exists(self, vertex_id: int) -> Optional[Type[Vertex]]:
+    def check_if_vertex_exists(self, vertex_id: str) -> Optional[Type[Vertex]]:
         '''Dado um id, checar se o vertice ja existe no grafo'''
         
         for vertex in self.vertices:
@@ -65,8 +65,8 @@ class Graph():
 
 
     def add_edge(self,
-                vertex_1: int,
-                vertex_2: int,
+                vertex_1: str,
+                vertex_2: str,
                 weight: int = 1) -> None:
         '''Adicionar uma aresta ao grafo. Essa classe foi escrita de forma que
         os vertices nao precisam ser adicionados individualmente, eles sao criados a medida
@@ -136,7 +136,7 @@ class Graph():
                 neighbors['edges'].append(edge)
         return neighbors
                 
-    def get_vertex_degree(self, vertex_id:int) -> Dict:
+    def get_vertex_degree(self, vertex_id: str) -> Dict:
         neighbors = self.get_neighbors(self.check_if_vertex_exists(vertex_id), True, True)
 
         if self.is_directed:
@@ -145,7 +145,7 @@ class Graph():
         
         return {"degree": len(neighbors["neighbors"]["vertices"])}
             
-    def are_vertices_adjacent(self, vertex_id_1:int, vertex_id_2:int) -> bool:
+    def are_vertices_adjacent(self, vertex_id_1: str, vertex_id_2: str) -> bool:
         neighbors = self.get_neighbors(self.check_if_vertex_exists(vertex_id_1), True, True)
         vertex_2 = self.check_if_vertex_exists(vertex_id_2)
 
@@ -157,15 +157,15 @@ class Graph():
         return vertex_2 in neighbors["neighbors"]["vertices"]
         
     
-    def get_neighbors_edges(self, vertex: Type[Vertex]) -> List[Type[Edge]]:
-        neighbors = []
-        for edge in self.edges:
-            if edge.check_if_vertex_exists(vertex):
-                neighbors.append(edge)
+    # def get_neighbors_edges(self, vertex: Type[Vertex]) -> List[Type[Edge]]:
+    #     neighbors = []
+    #     for edge in self.edges:
+    #         if edge.check_if_vertex_exists(vertex):
+    #             neighbors.append(edge)
         
-        return neighbors
+    #     return neighbors
 
-    def eccentricity(self, vertex_src: Vertex) -> int:
+    def eccentricity(self, vertex_src: Type[Vertex]) -> int:
         '''Recebe o vertice o qual se deseja a excentricidade'''
         djkstra_costs = [node.cost for _, node in self.djkstra_strategy.djkstra_algorithm(vertex_src.id).items()]
 

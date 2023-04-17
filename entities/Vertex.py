@@ -1,5 +1,5 @@
 class Vertex():
-    def __init__(self, id):
+    def __init__(self, id: str):
         self.id = id
 
     def __lt__(self, other: object) -> bool:

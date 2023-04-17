@@ -4,16 +4,16 @@ DIRECTED: True
 VALUED GRAPH: True
 
 VERTEXS:
-       1
-       4
+       A
+       D
        
 GRAPH:
      #V1;V2;We
-        1;4;7
-        2;3;5
-        2;4;9
-        3;4;9
-        4;5;7
-        4;6;6
-        5;6;9
-        7;1;11
+        A;D;7
+        B;C;5
+        B;D;9
+        C;D;9
+        D;E;7
+        D;F;6
+        E;F;9
+        G;A;11
