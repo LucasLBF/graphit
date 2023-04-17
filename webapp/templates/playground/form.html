@@ -8,29 +8,22 @@
     <div class="main-form">
         <form method="post" class="row g-3">
             {% csrf_token %}
-            {{ form.as_p }}
+            
+            <table class="form-table">
+                {{ form.as_table }}
+            </table>
 
             <div class="col-12">
               <button class="btn btn-primary" type="submit">Gerar</button>
             </div>
-          </form>
-    </div>
+        </form>
 
-    <div class="edge-form">
-    <form method="post" class="row g-3">
-        {% csrf_token %}
-
-        {% for edge in edges_form %}
-            <h3>Preencha a aresta</h3>
-            {{ edge }}
-        {% endfor %}
-
-        {% if edges_form %}
-        <div class="col-12">
-          <button class="btn btn-primary" type="submit">Gerar Grafo</button>
+        <div class="label-graph-area">
+            <h1>Generated Graph Area</h1>
         </div>
-        {% endif %}
-    </form>
+        <div class="graph-area">
+
+        </div>
     </div>
 </body>
 </html>

@@ -2,11 +2,35 @@
 .main-form {
     display: flex;
     height: 40%;
-    width: 40%;
+    width: 30%;
     padding: 50px;
     margin-top: 50px;
     margin-left: 50px;
     border-radius: 5%;
+    background-color: beige;
+}
+
+.form-table:td {
+    width: 100%;
+}
+
+.label-graph-area {
+    display: block;
+    position: absolute;
+    top: 12%;
+    left: 40%;
+}
+
+.graph-area {
+    display: block;
+    position: absolute;
+    height: 60%;
+    width: 60%;
+    padding: 50px;
+    margin-top: 50px;
+    margin-left: 50px;
+    border-radius: 5%;
+    left: 35%;
     background-color: beige;
 }
 
