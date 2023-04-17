@@ -7,7 +7,6 @@ GRAPH:
      #V1;V2
         A;D
         B;C
-        B;B
         B;D
         C;D
         D;E

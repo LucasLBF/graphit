@@ -1,6 +1,8 @@
 import sys
 import time
 from typing import Type
+from os import listdir
+from os.path import isfile, join
 from util.pyvis_visualization import pyvis_visualization_sssp
 from util.archive import read_graph_file
 from entities.DjkstraStrategy import DjkstraStrategy
@@ -57,15 +59,14 @@ def test_file(file_name: str):
 
 
 def test_all_files():
-    for i in range(8):
+    files = [f for f in listdir("test_files") if isfile(join("test_files", f))]
+    for file in files:
         try:
-            file_name = f"graphFile{i + 1}.txt"
-
             print("---------------------------------------------------")
-            print(f"------------  {file_name.upper()} ------------")
+            print(f"------------  {file.upper()} ------------")
             print("---------------------------------------------------")
 
-            graph = read_graph_file(file_name)
+            graph = read_graph_file(file)
             graph.set_djkstra_strategy(DjkstraStrategy(graph))
 
             print_all_options(graph)
