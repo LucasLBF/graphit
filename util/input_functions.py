@@ -1,5 +1,6 @@
 import sys
 import time
+import re
 from typing import Type
 from os import listdir
 from os.path import isfile, join
@@ -60,7 +61,9 @@ def test_file(file_name: str):
 
 def test_all_files():
     files = [f for f in listdir("test_files") if isfile(join("test_files", f))]
-    for file in files:
+    ordered_files = sorted(files, key=lambda f : int(re.search(r'\d+', f.split('.')[0]).group()))
+
+    for file in ordered_files:
         try:
             print("---------------------------------------------------")
             print(f"------------  {file.upper()} ------------")
