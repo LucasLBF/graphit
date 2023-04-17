@@ -32,11 +32,15 @@ def playground(request):
             # IMPLEMENT GRAPH ALGORITHMS CODE #
             ###################################
 
-            # show graph on side area
+            graph_generated = None
+            # find all .html files inside de templates graph folder
             graph_html_path = glob.glob(os.path.join(settings.BASE_DIR, 'templates/graph/*.html'))
-            graph_generated = render_to_string(graph_html_path[0])
-            # remove generated graph html file
-            os.remove(graph_html_path.pop())
+            # check if any file is found
+            if graph_html_path:
+                # render the .html file to string
+                graph_generated = render_to_string(graph_html_path[0])
+                # remove generated graph html file
+                os.remove(graph_html_path.pop())
 
             # redirect to a new URL:
             return render(request, 'playground/index.html', {'form': form, 'graph': graph_generated})
