@@ -1,0 +1,22 @@
+
+.main-form {
+    display: flex;
+    height: 40%;
+    width: 40%;
+    padding: 50px;
+    margin-top: 50px;
+    margin-left: 50px;
+    border-radius: 5%;
+    background-color: beige;
+}
+
+.edge-form {
+    width: 10%;
+    height: 10%;
+    position: relative;
+    left: 65%;
+}
+
+.errorlist {
+    display: none;
+}

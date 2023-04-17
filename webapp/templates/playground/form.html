@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+{% load static %}
+<html lang="pt-br">
+<head>
+    <link rel="stylesheet" href="{% static 'playground/css/form.css' %}">
+</head>
+<body>
+    <div class="main-form">
+        <form method="post" class="row g-3">
+            {% csrf_token %}
+            {{ form.as_p }}
+
+            <div class="col-12">
+              <button class="btn btn-primary" type="submit">Gerar</button>
+            </div>
+          </form>
+    </div>
+
+    <div class="edge-form">
+    <form method="post" class="row g-3">
+        {% csrf_token %}
+
+        {% for edge in edges_form %}
+            <h3>Preencha a aresta</h3>
+            {{ edge }}
+        {% endfor %}
+
+        {% if edges_form %}
+        <div class="col-12">
+          <button class="btn btn-primary" type="submit">Gerar Grafo</button>
+        </div>
+        {% endif %}
+    </form>
+    </div>
+</body>
+</html>
