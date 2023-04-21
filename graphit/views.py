@@ -32,10 +32,6 @@ def playground(request):
 
             t_ids, t_vertices_1, t_vertices_2, t_weights = input_treatment(ids, vertices_1, vertices_2, weights)
 
-            print(t_weights)
-            ###################################
-            # IMPLEMENT GRAPH ALGORITHMS CODE #
-            ###################################
             graph = Graph(is_directed)
 
             for curr_id in t_ids:
