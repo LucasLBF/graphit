@@ -4,6 +4,8 @@ from django.http import HttpResponseRedirect
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.conf import settings
+from graphit.entities.graph import Graph
+from graphit.utils.pyvis_visualization import pyvis_visualization
 import glob, os
 
 def index(request):
@@ -29,9 +31,23 @@ def playground(request):
             weights = form.cleaned_data['weights']
 
             t_ids, t_vertices_1, t_vertices_2, t_weights = input_treatment(ids, vertices_1, vertices_2, weights)
+
+            print(t_weights)
             ###################################
             # IMPLEMENT GRAPH ALGORITHMS CODE #
             ###################################
+            graph = Graph(is_directed)
+
+            for curr_id in t_ids:
+                graph.add_vertex(curr_id)
+            
+            for index in range(len(t_vertices_1)):
+                if t_weights:
+                    graph.add_edge(t_vertices_1[index], t_vertices_2[index], t_weights[index])
+                else:
+                    graph.add_edge(t_vertices_1[index], t_vertices_2[index])
+
+            pyvis_visualization(graph, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
 
             graph_generated = None
             # find all .html files inside de templates graph folder
@@ -67,5 +83,9 @@ def input_treatment(ids, vertices_1, vertices_2, weights):
     t_vertices_1 = vertices_1.replace(" ", "").split(",")
     t_vertices_2 = vertices_2.replace(" ", "").split(",")
     t_weights = weights.replace(" ", "").split(",")
+
+    t_weights = t_weights if t_weights[0] != "" else None
+    if t_weights:
+        t_weights = list(map(lambda weight: int(weight), t_weights))
 
     return t_ids, t_vertices_1, t_vertices_2, t_weights

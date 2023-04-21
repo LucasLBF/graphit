@@ -1,8 +1,13 @@
-from entities.Vertex import Vertex
-from entities.Edge import Edge
-from entities.errors import GraphCycleError, MultiEdgeError
+from django.db import models
+from abc import ABC, abstractmethod
+
+from graphit.entities.vertex import Vertex
+from graphit.entities.edge import Edge
+from graphit.entities.errors import GraphCycleError, MultiEdgeError
 from typing import Optional, Dict, List, Type
-from entities.Node import Node
+from graphit.entities.node import Node
+
+
 class Graph():
     def __init__(self, is_directed):
         self.is_directed = is_directed

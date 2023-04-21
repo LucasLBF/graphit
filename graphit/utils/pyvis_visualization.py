@@ -1,8 +1,8 @@
-from entities.Graph import Graph
+from graphit.entities.graph import Graph
 from pyvis.network import Network
 from typing import Type
 
-def pyvis_visualization(graph: Type[Graph]) -> None:
+def pyvis_visualization(graph: Type[Graph], origin_path: str) -> None:
     n = Network(height="100vh", width="100%", bgcolor="#222222", font_color="white", directed=graph.is_directed)
 
     for vertex in graph.get_vertices():
@@ -11,7 +11,7 @@ def pyvis_visualization(graph: Type[Graph]) -> None:
     for edge in graph.get_edges():
         n.add_edge(edge.first_vertex.id, edge.second_vertex.id, width=3, label=str(edge.weight) if edge.weight > 1 else None)
     
-    n.write_html("graph.html", open_browser=True)
+    n.write_html(origin_path, open_browser=True)
 
 
 def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str) -> None:

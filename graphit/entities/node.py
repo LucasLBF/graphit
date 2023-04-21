@@ -1,6 +1,6 @@
 from typing import Type
-from entities.Edge import Edge
-from entities.Vertex import Vertex
+from graphit.entities.edge import Edge
+from graphit.entities.vertex import Vertex
 from typing import Optional, Dict, List, Type
 
 class Node():

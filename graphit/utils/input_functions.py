@@ -6,7 +6,7 @@ from os import listdir
 from os.path import isfile, join
 from util.pyvis_visualization import pyvis_visualization_sssp
 from util.archive import read_graph_file
-from entities.DjkstraStrategy import DjkstraStrategy
+from entities.djkstra_strategy import DjkstraStrategy
 from entities.Graph import Graph
 
 def read_from_terminal():
