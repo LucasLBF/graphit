@@ -28,6 +28,7 @@ def playground(request):
             vertices_2 = form.cleaned_data['vertices_2']
             weights = form.cleaned_data['weights']
 
+            t_ids, t_vertices_1, t_vertices_2, t_weights = input_treatment(ids, vertices_1, vertices_2, weights)
             ###################################
             # IMPLEMENT GRAPH ALGORITHMS CODE #
             ###################################
@@ -60,3 +61,11 @@ class GraphForm(forms.Form):
     vertices_1 = forms.CharField(label='Vertices 1', max_length=100)
     vertices_2 = forms.CharField(label='Vertices 2', max_length=100)
     weights = forms.CharField(label='Weight (optional)', max_length=100, required=False)
+
+def input_treatment(ids, vertices_1, vertices_2, weights):
+    t_ids = ids.replace(" ", "").split(",")
+    t_vertices_1 = vertices_1.replace(" ", "").split(",")
+    t_vertices_2 = vertices_2.replace(" ", "").split(",")
+    t_weights = weights.replace(" ", "").split(",")
+
+    return t_ids, t_vertices_1, t_vertices_2, t_weights
