@@ -53,7 +53,7 @@ def playground(request):
                 # render the .html file to string
                 graph_generated = render_to_string(graph_html_path[0])
                 # remove generated graph html file
-                os.remove(graph_html_path.pop())
+                # os.remove(graph_html_path.pop())
 
             # redirect to a new URL:
             return render(request, 'playground/index.html', {'form': form, 'graph': graph_generated})
