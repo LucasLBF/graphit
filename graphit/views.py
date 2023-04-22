@@ -52,13 +52,15 @@ def playground(request):
                 else:
                     graph.add_edge(t_vertices_1[index], t_vertices_2[index])
 
+            results = {}
+
             if len(shortest_path) > 0:
                 vertex_a, vertex_b = shortest_path.split(',')
-                pyvis_visualization_sssp(graph, vertex_a, vertex_b, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
+                cost = pyvis_visualization_sssp(graph, vertex_a, vertex_b, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
+                results['shortest_path'] = {'vertex_a': vertex_a, 'vertex_b': vertex_b, 'value': cost}
             else:
                 pyvis_visualization(graph, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
 
-            results = {}
             if order:
                 results['graph_order'] = graph.get_order()
             if size:

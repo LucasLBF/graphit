@@ -14,7 +14,8 @@ def pyvis_visualization(graph: Type[Graph], origin_path: str) -> None:
     n.write_html(origin_path)
 
 
-def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str, output_path: str) -> None:
+def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str, output_path: str) -> int:
+    '''Cria um grafo com o menor caminho entre dois vertices e retorna o custo'''
 
     shortest_path = graph.get_shortest_path(src_id, dest_id)
 
@@ -53,3 +54,4 @@ def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str, outp
     
 
     n.write_html(output_path)
+    return shortest_path['cost']

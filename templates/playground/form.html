@@ -106,6 +106,13 @@
                   <td>{{ results.diameter }}</td>
                 </tr>
               {% endif %}
+
+              {% if 'shortest_path' in results %}
+                <tr>
+                  <th>Custo do menor caminho entre {{ results.shortest_path.vertex_a }} e {{ results.shortest_path.vertex_b }}</th>
+                  <td>{{ results.shortest_path.value }}</td>
+                </tr>
+              {% endif %}
             </tbody>
           </table>
           {% endif %}
