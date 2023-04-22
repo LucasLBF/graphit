@@ -11,7 +11,7 @@ def pyvis_visualization(graph: Type[Graph], origin_path: str) -> None:
     for edge in graph.get_edges():
         n.add_edge(edge.first_vertex.id, edge.second_vertex.id, width=3, label=str(edge.weight) if edge.weight > 1 else None)
     
-    n.write_html(origin_path, open_browser=True)
+    n.write_html(origin_path)
 
 
 def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str) -> None:

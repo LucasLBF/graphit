@@ -56,11 +56,12 @@ def playground(request):
                 # os.remove(graph_html_path.pop())
 
             # redirect to a new URL:
-            return render(request, 'playground/index.html', {'form': form, 'graph': graph_generated})
+            return render(request, 'playground/index.html', {'form': form, 'graph': graph_generated, 'menu': menu_form})
 
     # if a GET (or any other method) we'll create a blank form
     else:
         form = GraphForm()
+
 
     return render(request, 'playground/index.html', {'form': form})
 

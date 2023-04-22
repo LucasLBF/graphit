@@ -1,27 +1,29 @@
 <!DOCTYPE html>
 {% load static %}
 <html lang="pt-br">
-<head>
-    <link rel="stylesheet" href="{% static 'playground/css/form.css' %}">
-</head>
-<body>
+  <head>
+    <link rel="stylesheet" href="{% static 'playground/css/form.css' %}" />
+  </head>
+  <body>
     <div class="form-page">
+      <div class="form-container">
         <div class="main-form">
-            <form method="post" class="row g-3">
-                {% csrf_token %}
-                
-                <table class="form-table">
-                    {{ form.as_table }}
-                </table>
-    
-                <div class="col-12">
-                  <button class="btn btn-primary" type="submit">Gerar</button>
-                </div>
-            </form>
+          <form method="post" class="row g-3">
+            {% csrf_token %}
+
+            <table class="form-table">
+              {{ form.as_table }}
+            </table>
+
+            <div class="col-12">
+              <button class="btn btn-primary" type="submit">Gerar</button>
+            </div>
+          </form>
         </div>
-        <div class="graph-area">
-            {{ graph }}
-        </div>
+        <div class="display-info"></div>
+      </div>
+      <div class="graph-area">{{ graph }}</div>
     </div>
-</body>
+  </body>
+  <script></script>
 </html>
