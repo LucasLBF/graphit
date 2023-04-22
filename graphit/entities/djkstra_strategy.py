@@ -1,5 +1,5 @@
 from typing import Dict, List, Type, Union
-from graphit.entities.Graph import Graph
+from graphit.entities.graph import Graph
 from graphit.entities.node import Node
 from graphit.entities.vertex import Vertex
 import sys

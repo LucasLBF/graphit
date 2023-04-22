@@ -14,7 +14,7 @@ def pyvis_visualization(graph: Type[Graph], origin_path: str) -> None:
     n.write_html(origin_path)
 
 
-def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str) -> None:
+def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str, output_path: str) -> None:
 
     shortest_path = graph.get_shortest_path(src_id, dest_id)
 
@@ -52,4 +52,4 @@ def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str) -> N
                         width=5 if is_highlighted else 2)
     
 
-    n.write_html("graph.html", open_browser=True)
+    n.write_html(output_path)

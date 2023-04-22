@@ -5,7 +5,8 @@ from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.conf import settings
 from graphit.entities.graph import Graph
-from graphit.utils.pyvis_visualization import pyvis_visualization
+from graphit.entities.djkstra_strategy import DjkstraStrategy
+from graphit.utils.pyvis_visualization import pyvis_visualization, pyvis_visualization_sssp
 import glob, os
 
 def index(request):
@@ -22,17 +23,25 @@ def playground(request):
         if form.is_valid():
             # process the data in form.cleaned_data as required
             # ...
-            n_vertices = form.cleaned_data['n_vertices']
-            n_edges = form.cleaned_data['n_edges']
             is_directed = form.cleaned_data['is_directed']
             ids = form.cleaned_data['ids']
             vertices_1 = form.cleaned_data['vertices_1']
             vertices_2 = form.cleaned_data['vertices_2']
             weights = form.cleaned_data['weights']
 
+            order = form.cleaned_data['order']
+            size = form.cleaned_data['size']
+            neighbors = form.cleaned_data['neighbors']
+            degree = form.cleaned_data['degree']
+            adjacent = form.cleaned_data['adjacent']
+            radius = form.cleaned_data['radius']
+            diameter = form.cleaned_data['diameter']
+            shortest_path = form.cleaned_data['shortest_path']
+
             t_ids, t_vertices_1, t_vertices_2, t_weights = input_treatment(ids, vertices_1, vertices_2, weights)
 
             graph = Graph(is_directed)
+            graph.set_djkstra_strategy(DjkstraStrategy(graph))
 
             for curr_id in t_ids:
                 graph.add_vertex(curr_id)
@@ -43,7 +52,11 @@ def playground(request):
                 else:
                     graph.add_edge(t_vertices_1[index], t_vertices_2[index])
 
-            pyvis_visualization(graph, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
+            if len(shortest_path) > 0:
+                vertex_a, vertex_b = shortest_path.split(',')
+                pyvis_visualization_sssp(graph, vertex_a, vertex_b, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
+            else:
+                pyvis_visualization(graph, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
 
             graph_generated = None
             # find all .html files inside de templates graph folder
@@ -55,8 +68,9 @@ def playground(request):
                 # remove generated graph html file
                 # os.remove(graph_html_path.pop())
 
+            context = {'form': form, 'graph': graph_generated}
             # redirect to a new URL:
-            return render(request, 'playground/index.html', {'form': form, 'graph': graph_generated, 'menu': menu_form})
+            return render(request, 'playground/index.html', context)
 
     # if a GET (or any other method) we'll create a blank form
     else:
@@ -68,12 +82,21 @@ def playground(request):
 
 class GraphForm(forms.Form):
     is_directed = forms.BooleanField(label='Graph is Directed (y/n)', required=False)
-    n_vertices = forms.CharField(label='Vertices Quantity', max_length=100, widget=forms.TextInput(attrs={'class': 'vertex_area'}))
-    n_edges = forms.CharField(label='Edges Quantity', max_length=100)
     ids = forms.CharField(label='Ids do Vertice', max_length=100)
     vertices_1 = forms.CharField(label='Vertices 1', max_length=100)
     vertices_2 = forms.CharField(label='Vertices 2', max_length=100)
+
     weights = forms.CharField(label='Weight (optional)', max_length=100, required=False)
+    order = forms.BooleanField(label='Graph Order', required=False)
+    size = forms.BooleanField(label='Graph Size', required=False)
+    neighbors = forms.CharField(label='Vertex neighbors', max_length=100, required=False)
+    degree = forms.CharField(label='Vertex degree', max_length=100, required=False)
+    adjacent = forms.CharField(label='Adjacent vertices', max_length=100, required=False)
+    radius = forms.BooleanField(label='Graph radius', required=False)
+    diameter = forms.BooleanField(label='Graph diameter', required=False)
+    shortest_path = forms.CharField(label='Shortest path', max_length=100, required=False)
+
+
 
 def input_treatment(ids, vertices_1, vertices_2, weights):
     t_ids = ids.replace(" ", "").split(",")
