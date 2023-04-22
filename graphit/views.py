@@ -7,6 +7,7 @@ from django.conf import settings
 from graphit.entities.graph import Graph
 from graphit.entities.djkstra_strategy import DjkstraStrategy
 from graphit.utils.pyvis_visualization import pyvis_visualization, pyvis_visualization_sssp
+from graphit.utils.archive import read_graph_uploaded_file
 import glob, os, sys
 
 def index(request):
@@ -17,7 +18,7 @@ def playground(request):
 
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
-        form = GraphForm(request.POST)
+        form = GraphForm(request.POST, request.FILES)
 
         # check whether it's valid:
         if form.is_valid():
@@ -28,6 +29,7 @@ def playground(request):
             vertices_1 = form.cleaned_data['vertices_1']
             vertices_2 = form.cleaned_data['vertices_2']
             weights = form.cleaned_data['weights']
+            file = form.cleaned_data['file']
 
             order = form.cleaned_data['order']
             size = form.cleaned_data['size']
@@ -38,19 +40,25 @@ def playground(request):
             diameter = form.cleaned_data['diameter']
             shortest_path = form.cleaned_data['shortest_path']
 
-            t_ids, t_vertices_1, t_vertices_2, t_weights = input_treatment(ids, vertices_1, vertices_2, weights)
 
-            graph = Graph(is_directed)
-            graph.set_djkstra_strategy(DjkstraStrategy(graph))
-
-            for curr_id in t_ids:
-                graph.add_vertex(curr_id)
+            if file:
+                graph = read_graph_uploaded_file(file)
+                graph.set_djkstra_strategy(DjkstraStrategy(graph))
             
-            for index in range(len(t_vertices_1)):
-                if t_weights:
-                    graph.add_edge(t_vertices_1[index], t_vertices_2[index], t_weights[index])
-                else:
-                    graph.add_edge(t_vertices_1[index], t_vertices_2[index])
+            else: 
+                t_ids, t_vertices_1, t_vertices_2, t_weights = input_treatment(ids, vertices_1, vertices_2, weights)
+
+                graph = Graph(is_directed)
+                graph.set_djkstra_strategy(DjkstraStrategy(graph))
+
+                for curr_id in t_ids:
+                    graph.add_vertex(curr_id)
+            
+                for index in range(len(t_vertices_1)):
+                    if t_weights:
+                        graph.add_edge(t_vertices_1[index], t_vertices_2[index], t_weights[index])
+                    else:
+                        graph.add_edge(t_vertices_1[index], t_vertices_2[index])
 
             results = {}
 
@@ -97,20 +105,14 @@ def playground(request):
 
 
             graph_generated = None
-            # find all .html files inside de templates graph folder
             graph_html_path = glob.glob(os.path.join(settings.BASE_DIR, 'templates/graph/*.html'))
-            # check if any file is found
             if graph_html_path:
-                # render the .html file to string
                 graph_generated = render_to_string(graph_html_path[0])
-                # remove generated graph html file
-                # os.remove(graph_html_path.pop())
 
             context = {'form': form, 'graph': graph_generated, 'results': results}
-            # redirect to a new URL:
+
             return render(request, 'playground/index.html', context)
 
-    # if a GET (or any other method) we'll create a blank form
     else:
         form = GraphForm()
 
@@ -120,9 +122,9 @@ def playground(request):
 
 class GraphForm(forms.Form):
     is_directed = forms.BooleanField(label='Graph is Directed (y/n)', required=False)
-    ids = forms.CharField(label='Ids do Vertice', max_length=100)
-    vertices_1 = forms.CharField(label='Vertices 1', max_length=100)
-    vertices_2 = forms.CharField(label='Vertices 2', max_length=100)
+    ids = forms.CharField(label='Ids do Vertice', max_length=100, required=False)
+    vertices_1 = forms.CharField(label='Vertices 1', max_length=100, required=False)
+    vertices_2 = forms.CharField(label='Vertices 2', max_length=100, required=False)
 
     weights = forms.CharField(label='Weight (optional)', max_length=100, required=False)
     order = forms.BooleanField(label='Graph Order', required=False)
@@ -133,6 +135,7 @@ class GraphForm(forms.Form):
     radius = forms.BooleanField(label='Graph radius', required=False)
     diameter = forms.BooleanField(label='Graph diameter', required=False)
     shortest_path = forms.CharField(label='Shortest path', max_length=100, required=False)
+    file = forms.FileField(label="Arquivo graphFile", required=False)
 
 
 
