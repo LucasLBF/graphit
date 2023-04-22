@@ -1,5 +1,5 @@
 from typing import Type
-from entities.Vertex import Vertex
+from graphit.entities.vertex import Vertex
 from typing import Optional, Dict, List, Type
 
 class Edge():

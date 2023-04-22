@@ -1,8 +1,13 @@
-from entities.Vertex import Vertex
-from entities.Edge import Edge
-from entities.errors import GraphCycleError, MultiEdgeError
+from django.db import models
+from abc import ABC, abstractmethod
+
+from graphit.entities.vertex import Vertex
+from graphit.entities.edge import Edge
+from graphit.entities.errors import GraphCycleError, MultiEdgeError
 from typing import Optional, Dict, List, Type
-from entities.Node import Node
+from graphit.entities.node import Node
+
+
 class Graph():
     def __init__(self, is_directed):
         self.is_directed = is_directed
@@ -91,7 +96,7 @@ class Graph():
     def validate_edge(self, new_edge: Type[Edge]) -> None:
         for edge in self.edges:
             if edge.is_parallel_edge(new_edge):
-                raise MultiEdgeError("O grafo deve ser simples. Retire a aresta paralela e tente novamente")
+                raise MultiEdgeError(f"O grafo deve ser simples. Retire a aresta paralela {new_edge} e tente novamente")
     
     def get_neighbors(self,
                     vertex: Type[Vertex],

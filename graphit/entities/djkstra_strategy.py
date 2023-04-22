@@ -1,7 +1,7 @@
 from typing import Dict, List, Type, Union
-from entities.Graph import Graph
-from entities.Node import Node
-from entities.Vertex import Vertex
+from graphit.entities.graph import Graph
+from graphit.entities.node import Node
+from graphit.entities.vertex import Vertex
 import sys
 from heapq import heapify, heappush, heappop
 
