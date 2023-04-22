@@ -20,9 +20,98 @@
             </div>
           </form>
         </div>
-        <div class="display-info"></div>
+        <div class="display-info">
+          {% if True %}
+          <table class="table table-bordered border-primary">
+            <tbody>
+              {% if 'graph_order' in results %}
+              <tr>
+                <th>Ordem do grafo</th>
+                <td>{{ results.graph_order }}</td>
+              </tr>
+              {% endif %}
+
+              {% if 'graph_size' in results %}
+              <tr>
+                <th>Tamanho do grafo</th>
+                <td>{{ results.graph_size }}</td>
+              </tr>
+              {% endif %}
+
+              {% if 'vertex_neighbors' in results %}
+                {% if results.vertex_neighbors.is_directed %}
+                <tr>
+                  <th>
+                    Vizinhaça de entrada do vértice {{ results.vertex_neighbors.vertex }}
+                  </th>
+                  <td>{{ results.vertex_neighbors.in_neighbors }}</td>
+                </tr>
+                <tr>
+                  <th>
+                    Vizinhaça de saída do vértice {{ results.vertex_neighbors.vertex }}
+                  </th>
+                  <td>{{ results.vertex_neighbors.out_neighbors }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                  <th>
+                    Vizinhaça do vertice {{ results.vertex_neighbors.vertex }}
+                  </th>
+                  <td>{{ results.vertex_neighbors.neighbors }}</td>
+                </tr>
+                {% endif %}
+              {% endif %}
+
+              {% if 'vertex_degree' in results %}
+                {% if results.vertex_degree.is_directed %}
+                <tr>
+                  <th>
+                    Grau de entrada do vértice {{ results.vertex_degree.vertex }}
+                  </th>
+                  <td>{{ results.vertex_degree.in_degree }}</td>
+                </tr>
+                <tr>
+                  <th>
+                    Grau de saída do vértice {{ results.vertex_degree.vertex }}
+                  </th>
+                  <td>{{ results.vertex_degree.out_degree }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                  <th>
+                    Grau do vertice {{ results.vertex_degree.vertex }}
+                  </th>
+                  <td>{{ results.vertex_degree.degree }}</td>
+                </tr>
+                {% endif %}
+              {% endif %}
+
+              {% if 'adjacent_vertices' in results %}
+                <tr>
+                  <th>Os vértices {{results.adjacent_vertices.vertex_a}} e {{results.adjacent_vertices.vertex_b}} são adjacentes?</th>
+                  <td>{{ results.adjacent_vertices.answer }}</td>
+                </tr>
+              {% endif %}
+
+              {% if 'radius' in results %}
+                <tr>
+                  <th>Raio do grafo</th>
+                  <td>{{ results.radius }}</td>
+                </tr>
+              {% endif %}
+
+              {% if 'diameter' in results %}
+                <tr>
+                  <th>Diâmetro do grafo</th>
+                  <td>{{ results.diameter }}</td>
+                </tr>
+              {% endif %}
+            </tbody>
+          </table>
+          {% endif %}
+        </div>
       </div>
-      <div class="graph-area">{{ graph }}</div>
+      <div class="graph-area">{{ graph}}</div>
     </div>
   </body>
   <script></script>

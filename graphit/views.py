@@ -7,7 +7,7 @@ from django.conf import settings
 from graphit.entities.graph import Graph
 from graphit.entities.djkstra_strategy import DjkstraStrategy
 from graphit.utils.pyvis_visualization import pyvis_visualization, pyvis_visualization_sssp
-import glob, os
+import glob, os, sys
 
 def index(request):
     
@@ -58,6 +58,42 @@ def playground(request):
             else:
                 pyvis_visualization(graph, os.path.join(settings.BASE_DIR, 'templates/graph/generated_graph.html'))
 
+            results = {}
+            if order:
+                results['graph_order'] = graph.get_order()
+            if size:
+                results['graph_size'] = graph.get_order()
+
+            if len(neighbors) > 0:
+                vertex_neighbors = graph.get_neighbors(graph.check_if_vertex_exists(neighbors), in_neighbors=True, out_neighbors=True)
+                if graph.is_directed:
+                    results['vertex_neighbors'] = { 'vertex': neighbors, 'in_neighbors' : vertex_neighbors['in_neighbors']['vertices'], 'out_neighbors': vertex_neighbors['out_neighbors']['vertices'], 'is_directed': graph.is_directed}
+                else:
+                    results['vertex_neighbors'] = { 'vertex': neighbors,  'neighbors': vertex_neighbors['neighbors']['vertices'], 'is_directed': graph.is_directed}
+            
+            if len(degree) > 0:
+                vertex_degree = graph.get_vertex_degree(degree)
+                if graph.is_directed:
+                    results['vertex_degree'] = {'vertex': degree, 'in_degree' : vertex_degree['in_degree'], 'out_degree': vertex_degree['out_degree'], 'is_directed': graph.is_directed}
+                else:
+                    results['vertex_degree'] = {'vertex': degree, 'degree' : vertex_degree['degree'], 'is_directed': graph.is_directed}
+                
+            if len(adjacent) > 0:
+                vertex_a, vertex_b = adjacent.split(',')
+                check_adjacent = graph.are_vertices_adjacent(vertex_a, vertex_b)
+                results['adjacent_vertices'] = {'vertex_a': vertex_a, 'vertex_b': vertex_b, 'answer': 'Sim' if check_adjacent else 'Não'}
+            
+            if radius or diameter:
+                radius_diameter = graph.get_radius_diameter()
+            if diameter:
+                vertex_diameter = radius_diameter['diameter']
+                results['diameter'] = vertex_diameter if vertex_diameter != sys.maxsize else 'Infinito'
+            if radius:
+                vertex_radius = radius_diameter['radius']
+                results['radius'] = vertex_radius if vertex_radius != sys.maxsize else 'Infinito'
+
+
+
             graph_generated = None
             # find all .html files inside de templates graph folder
             graph_html_path = glob.glob(os.path.join(settings.BASE_DIR, 'templates/graph/*.html'))
@@ -68,7 +104,7 @@ def playground(request):
                 # remove generated graph html file
                 # os.remove(graph_html_path.pop())
 
-            context = {'form': form, 'graph': graph_generated}
+            context = {'form': form, 'graph': graph_generated, 'results': results}
             # redirect to a new URL:
             return render(request, 'playground/index.html', context)
 
