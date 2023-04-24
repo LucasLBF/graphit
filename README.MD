@@ -25,11 +25,11 @@
 ## Clone Project
 
 ```bash
-$ git https://github.com/LucasLBF/trabalho-grafos.git folder
+$ git clone https://github.com/LucasLBF/trabalho-grafos.git folder
 $ cd folder
 ```
 
-## Dependências
+## Dependencies
 
 To install the dependencies on the system, generally speaking, execute the following command:
 ```bash
