@@ -24,6 +24,7 @@ def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str, outp
     if not shortest_path:
         src_vertex = graph.check_if_vertex_exists(src_id)
         dest_vertex = graph.check_if_vertex_exists(dest_id)
+        cost = "Infinito"
 
         print(f"Nao existe caminho valido entre os vertices {src_vertex} e {dest_vertex}")
         for vertex in graph.get_vertices():
@@ -37,6 +38,7 @@ def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str, outp
                         label=str(edge.weight) if edge.weight > 1 else None)
 
     else:
+        cost = shortest_path['cost']
         print("Menor caminho:", shortest_path["vertices"])
         print("Custo do menor caminho:", shortest_path["cost"])
 
@@ -54,4 +56,5 @@ def pyvis_visualization_sssp(graph: Type[Graph], src_id: str, dest_id: str, outp
     
 
     n.write_html(output_path)
-    return shortest_path['cost']
+    # return shortest_path['cost']
+    return cost

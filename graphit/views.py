@@ -72,7 +72,7 @@ def playground(request):
             if order:
                 results['graph_order'] = graph.get_order()
             if size:
-                results['graph_size'] = graph.get_order()
+                results['graph_size'] = graph.get_size()
 
             if len(neighbors) > 0:
                 vertex_neighbors = graph.get_neighbors(graph.check_if_vertex_exists(neighbors), in_neighbors=True, out_neighbors=True)
@@ -121,20 +121,20 @@ def playground(request):
 
 
 class GraphForm(forms.Form):
-    is_directed = forms.BooleanField(label='Graph is Directed (y/n)', required=False)
-    ids = forms.CharField(label='Ids do Vertice', max_length=100, required=False)
+    is_directed = forms.BooleanField(label='O grafo é direcionado? (y/n)', required=False)
+    ids = forms.CharField(label='Ids dos Vértices', max_length=100, required=False)
     vertices_1 = forms.CharField(label='Vertices 1', max_length=100, required=False)
     vertices_2 = forms.CharField(label='Vertices 2', max_length=100, required=False)
 
-    weights = forms.CharField(label='Weight (optional)', max_length=100, required=False)
-    order = forms.BooleanField(label='Graph Order', required=False)
-    size = forms.BooleanField(label='Graph Size', required=False)
-    neighbors = forms.CharField(label='Vertex neighbors', max_length=100, required=False)
-    degree = forms.CharField(label='Vertex degree', max_length=100, required=False)
-    adjacent = forms.CharField(label='Adjacent vertices', max_length=100, required=False)
-    radius = forms.BooleanField(label='Graph radius', required=False)
-    diameter = forms.BooleanField(label='Graph diameter', required=False)
-    shortest_path = forms.CharField(label='Shortest path', max_length=100, required=False)
+    weights = forms.CharField(label='Pesos (opcional)', max_length=100, required=False)
+    order = forms.BooleanField(label='Ordem do grafo', required=False)
+    size = forms.BooleanField(label='Tamanho do grafo', required=False)
+    neighbors = forms.CharField(label='Checar vizinhança de vértices', max_length=100, required=False)
+    degree = forms.CharField(label='Checar grau do vértice', max_length=100, required=False)
+    adjacent = forms.CharField(label='Checar vértices adjacentes', max_length=100, required=False)
+    radius = forms.BooleanField(label='Raio do grafo', required=False)
+    diameter = forms.BooleanField(label='Diâmetro do grafo', required=False)
+    shortest_path = forms.CharField(label='Menor caminho entre vértices', max_length=100, required=False)
     file = forms.FileField(label="Arquivo graphFile", required=False)
 
 
