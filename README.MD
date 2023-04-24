@@ -41,7 +41,7 @@ To compile the project, execute the following command:
 ```bash
 $ python manage.py migrate
 ```
-e depois
+and then
 ```bash
 $ python manage.py runserver
 ```
