@@ -29,6 +29,25 @@ $ git clone https://github.com/LucasLBF/trabalho-grafos.git folder
 $ cd folder
 ```
 
+## Creating a Virtual Enviroment
+
+Marking a virtual enviroment with python to install all dependencies.
+```bash
+$ python -m venv venv
+```
+> **MacOS & Linux**
+</br>
+> How to activate the virtual enviroment in MacOS 
+```bash
+$ source venv/bin/activate
+```
+> **Windows**
+</br>
+> How to activate the virtual enviroment in Linux 
+```bash
+$ .\venv\Scripts\activate
+```
+
 ## Dependencies
 
 To install the dependencies on the system, generally speaking, execute the following command:
