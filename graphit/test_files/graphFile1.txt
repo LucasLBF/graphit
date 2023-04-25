@@ -1,0 +1,19 @@
+#lines starting with '#' are going to be jumped
+DIRECTED: True
+
+VALUED GRAPH: True
+
+VERTEXS:
+       A
+       D
+       
+GRAPH:
+     #V1;V2;We
+        A;D;7
+        B;C;5
+        B;D;9
+        C;D;9
+        D;E;7
+        D;F;6
+        E;F;9
+        G;A;11

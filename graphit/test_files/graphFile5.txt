@@ -1,0 +1,13 @@
+DIRECTED: False
+
+VALUED GRAPH: False
+
+GRAPH:
+     #V1;V2
+        A;D
+        B;C
+        B;D
+        C;D
+        D;E
+        D;F
+        E;F

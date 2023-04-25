@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 example.txt
-*.html
+generated_graph.html
