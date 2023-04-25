@@ -35,14 +35,16 @@ Marking a virtual enviroment with python to install all dependencies.
 ```bash
 $ python -m venv venv
 ```
-> **MacOS & Linux**
-</br>
+
+#### **MacOS & Linux**
+
 > How to activate the virtual enviroment in MacOS 
 ```bash
 $ source venv/bin/activate
 ```
-> **Windows**
-</br>
+
+#### **Windows**
+
 > How to activate the virtual enviroment in Linux 
 ```bash
 $ .\venv\Scripts\activate
